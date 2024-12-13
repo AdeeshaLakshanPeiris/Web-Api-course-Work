@@ -20,7 +20,6 @@ app.use("/api/reservations", reservationRoutes);
 
 
 // MongoDB Connection
-// MongoDB Connection
 const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/busReservation";
 
 mongoose
