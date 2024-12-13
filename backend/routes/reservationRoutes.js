@@ -3,12 +3,15 @@ const Reservation = require("../models/Reservation");
 const router = express.Router();
 
 // Get reservations for a bus
-router.get("/:busId", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const reservations = await Reservation.find({ busId: req.params.busId });
-    res.json(reservations);
+    const bus = await Bus.findById(req.params.id);
+    if (!bus) {
+      return res.status(404).json({ message: "Bus not found" });
+    }
+    res.json(bus);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch reservations" });
+    res.status(500).json({ message: "Failed to fetch bus details" });
   }
 });
 
