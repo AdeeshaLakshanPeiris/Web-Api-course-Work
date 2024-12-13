@@ -1,24 +1,31 @@
 const express = require("express");
 const Reservation = require("../models/Reservation");
+const Bus = require("../models/Bus"); // Ensure the Bus model exists
 const router = express.Router();
 
-// Get reservations for a bus
-router.get("/:id", async (req, res) => {
+// Get reservations for a specific bus
+router.get("/:busId", async (req, res) => {
   try {
-    const bus = await Bus.findById(req.params.id);
-    if (!bus) {
-      return res.status(404).json({ message: "Bus not found" });
-    }
-    res.json(bus);
+    const { busId } = req.params;
+
+    // Fetch reservations for the given bus ID
+    const reservations = await Reservation.find({ busId });
+    res.json(reservations);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch bus details" });
+    console.error("Error fetching reservations:", err);
+    res.status(500).json({ message: "Failed to fetch reservations" });
   }
 });
 
 // Create a new reservation
 router.post("/", async (req, res) => {
   try {
-    const { busId, seatNumber, passengerName, date } = req.body;
+    const { busId, seatNumber, passengerName, passengerId, date } = req.body;
+
+    // Validate required fields
+    if (!busId || !seatNumber || !passengerName || !passengerId || !date) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     // Check if the seat is already reserved
     const existingReservation = await Reservation.findOne({ busId, seatNumber });
@@ -26,10 +33,12 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Seat already reserved" });
     }
 
-    const reservation = new Reservation({ busId, seatNumber, passengerName, date });
+    // Create and save the reservation
+    const reservation = new Reservation({ busId, seatNumber, passengerName, passengerId, date });
     await reservation.save();
     res.status(201).json({ message: "Reservation successful", reservation });
   } catch (err) {
+    console.error("Error creating reservation:", err);
     res.status(500).json({ message: "Failed to create reservation" });
   }
 });

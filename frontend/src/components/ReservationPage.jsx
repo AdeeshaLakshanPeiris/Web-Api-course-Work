@@ -10,8 +10,26 @@ const ReservationPage = () => {
 
   // Fetch bus details and reservations
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/buses/${id}`).then((res) => setBus(res.data));
-    axios.get(`http://localhost:5000/api/reservations/${id}`).then((res) => setReservations(res.data));
+    const fetchBusDetails = async () => {
+      try {
+        const busResponse = await axios.get(`http://localhost:5000/api/buses/${id}`);
+        setBus(busResponse.data);
+      } catch (err) {
+        console.error("Failed to fetch bus details:", err);
+      }
+    };
+
+    const fetchReservations = async () => {
+      try {
+        const reservationResponse = await axios.get(`http://localhost:5000/api/reservations/${id}`);
+        setReservations(reservationResponse.data);
+      } catch (err) {
+        console.error("Failed to fetch reservations:", err);
+      }
+    };
+
+    fetchBusDetails();
+    fetchReservations();
   }, [id]);
 
   const handleSeatClick = (seat) => {
@@ -28,14 +46,17 @@ const ReservationPage = () => {
         await axios.post("http://localhost:5000/api/reservations", {
           busId: id,
           seatNumber: seat,
-          passengerName: "John Doe", // Replace with dynamic user name
+          passengerName: "John Doe", // Replace with logged-in user's name
+          passengerId: "675bc727317e945aa3915b90",    // Replace with logged-in user's ID
           date: new Date().toISOString().split("T")[0], // Current date
         });
       }
       alert("Reservation successful!");
       setSelectedSeats([]); // Clear selected seats
+
+      // Refresh reservations
       const res = await axios.get(`http://localhost:5000/api/reservations/${id}`);
-      setReservations(res.data); // Update reservations
+      setReservations(res.data);
     } catch (err) {
       alert(err.response?.data?.message || "Reservation failed");
     }
