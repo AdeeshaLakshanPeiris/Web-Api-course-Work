@@ -1,10 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const busSchema = new mongoose.Schema({
-    number: { type: String, required: true },
-    route: { type: String, required: true },
-    seats: { type: Number, required: true },
-    availableSeats: { type: Number, required: true },
+const BusSchema = new mongoose.Schema({
+  number: String,
+  route: String,
+  seats: Number,
+  departureTime: String,
+  arrivalTime: String,
 });
 
-module.exports = mongoose.model('Bus', busSchema);
+module.exports = mongoose.model("Bus", BusSchema);

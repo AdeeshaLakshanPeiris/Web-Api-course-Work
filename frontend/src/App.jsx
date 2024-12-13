@@ -1,18 +1,21 @@
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import BusList from './components/BusList';
+import Login from './components/Login';
+import Register from './components/Register';
 import { AuthProvider } from './context/AuthContext';
-import Admin from './pages/Admin';
-import Driver from './pages/Driver';
-import Passenger from './pages/Passenger';
+import ReservationPage from './components/ReservationPage';
+
 
 const App = () => {
     return (
         <AuthProvider>
             <Router>
                 <Routes>
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/passenger" element={<Passenger />} />
-                    <Route path="/driver" element={<Driver />} />
+                <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/buses" element={<BusList />} />
+        <Route path="/reservation/:id" element={<ReservationPage />} />
                 </Routes>
             </Router>
         </AuthProvider>
