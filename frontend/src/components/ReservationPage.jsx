@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { FaChair } from "react-icons/fa"; // Seat icon
 
 const ReservationPage = () => {
   const { id } = useParams(); // Get the bus ID from the route
@@ -10,8 +11,26 @@ const ReservationPage = () => {
 
   // Fetch bus details and reservations
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/buses/${id}`).then((res) => setBus(res.data));
-    axios.get(`http://localhost:5000/api/reservations/${id}`).then((res) => setReservations(res.data));
+    const fetchBusDetails = async () => {
+      try {
+        const busResponse = await axios.get(`http://localhost:5000/api/buses/${id}`);
+        setBus(busResponse.data);
+      } catch (err) {
+        console.error("Failed to fetch bus details:", err);
+      }
+    };
+
+    const fetchReservations = async () => {
+      try {
+        const reservationResponse = await axios.get(`http://localhost:5000/api/reservations/${id}`);
+        setReservations(reservationResponse.data);
+      } catch (err) {
+        console.error("Failed to fetch reservations:", err);
+      }
+    };
+
+    fetchBusDetails();
+    fetchReservations();
   }, [id]);
 
   const handleSeatClick = (seat) => {
@@ -28,14 +47,17 @@ const ReservationPage = () => {
         await axios.post("http://localhost:5000/api/reservations", {
           busId: id,
           seatNumber: seat,
-          passengerName: "John Doe", // Replace with dynamic user name
+          passengerName: "John Doe", // Replace with logged-in user's name
+          passengerId: "675bc727317e945aa3915b90", // Replace with logged-in user's ID
           date: new Date().toISOString().split("T")[0], // Current date
         });
       }
       alert("Reservation successful!");
       setSelectedSeats([]); // Clear selected seats
+
+      // Refresh reservations
       const res = await axios.get(`http://localhost:5000/api/reservations/${id}`);
-      setReservations(res.data); // Update reservations
+      setReservations(res.data);
     } catch (err) {
       alert(err.response?.data?.message || "Reservation failed");
     }
@@ -46,40 +68,108 @@ const ReservationPage = () => {
   const isSeatReserved = (seat) =>
     reservations.some((r) => r.seatNumber === seat);
 
+  // Define the 3+2 seat layout
+  const rows = 8; // Number of rows
+  const seatsPerRow = [3, 2]; // Define the seat configuration (3+2)
+  const seatLayout = Array.from({ length: rows }).map((_, rowIndex) => {
+    const row = [];
+    let seatNumber = rowIndex * 5 + 1; // Start seat numbering
+    seatsPerRow.forEach((count, index) => {
+      for (let i = 0; i < count; i++) {
+        row.push(seatNumber++);
+      }
+      if (index === 0) row.push(null); // Add an empty space for the aisle
+    });
+    return row;
+  });
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Reserve Seats for {bus.number}</h1>
-      <p>Route: {bus.route}</p>
-      <p>Available Seats: {bus.seats - reservations.length}</p>
-      <div className="grid grid-cols-8 gap-2 mt-4">
-        {Array.from({ length: bus.seats }, (_, i) => i + 1).map((seat) => (
-          <div
-            key={seat}
-            className={`p-2 text-center rounded cursor-pointer ${
-              isSeatReserved(seat)
-                ? "bg-red-500 text-white cursor-not-allowed"
-                : selectedSeats.includes(seat)
-                ? "bg-blue-500 text-white"
-                : "bg-green-500 text-white"
-            }`}
-            onClick={() => !isSeatReserved(seat) && handleSeatClick(seat)}
-          >
-            {seat}
+    <div className="p-8 bg-gray-100 min-h-screen">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Bus Information */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <img
+            src={bus.image || "https://via.placeholder.com/500x300"}
+            alt={bus.route}
+            className="w-full h-56 object-cover rounded-md mb-4"
+          />
+          <h1 className="text-2xl font-bold">{bus.route}</h1>
+          <p className="text-gray-600 text-sm mb-2">
+            <strong>Bus Number:</strong> {bus.number}
+          </p>
+          <p className="text-gray-600 text-sm mb-2">
+            <strong>Total Seats:</strong> {bus.seats}
+          </p>
+          <p className="text-gray-600 text-sm mb-2">
+            <strong>Seats Available:</strong> {bus.seats - reservations.length}
+          </p>
+        </div>
+
+        {/* Seat Selection */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-lg font-bold mb-4">Select Your Seat</h2>
+
+          {/* Bus Seat Layout */}
+          <div className="flex flex-col items-center">
+            {seatLayout.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex items-center mb-4">
+                {row.map((seat, index) =>
+                  seat ? (
+                    <div
+                      key={seat}
+                      className={`h-12 w-12 flex items-center justify-center rounded cursor-pointer border shadow-md ${
+                        isSeatReserved(seat)
+                          ? "bg-red-500 text-white cursor-not-allowed"
+                          : selectedSeats.includes(seat)
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200"
+                      }`}
+                      onClick={() => !isSeatReserved(seat) && handleSeatClick(seat)}
+                    >
+                      <FaChair />
+                      <span className="text-xs">{seat}</span>
+                    </div>
+                  ) : (
+                    <div key={index} className="h-12 w-12"></div> // Empty space for aisle
+                  )
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      {selectedSeats.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-lg font-bold">Selected Seats</h2>
-          <p>{selectedSeats.join(", ")}</p>
+
+          {/* Legend */}
+          <div className="mt-6 flex justify-between text-sm">
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 bg-gray-200 border rounded"></div>
+              <span>Available</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 bg-red-500 border rounded"></div>
+              <span>Booked</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 bg-blue-500 border rounded"></div>
+              <span>Selected</span>
+            </div>
+          </div>
+
+          {/* Selected Seats */}
+          {selectedSeats.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg font-bold">Selected Seats:</h3>
+              <p>{selectedSeats.join(", ")}</p>
+            </div>
+          )}
+
+          {/* Reservation Button */}
           <button
-            className="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            className="w-full bg-purple-500 text-white py-2 px-4 rounded-md mt-6 hover:bg-purple-600 transition"
             onClick={handleReservation}
           >
-            Confirm Reservation
+            Reserve Seats
           </button>
         </div>
-      )}
+      </div>
     </div>
   );
 };
