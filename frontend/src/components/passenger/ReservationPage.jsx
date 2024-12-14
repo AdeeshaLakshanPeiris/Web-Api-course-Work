@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaChair } from "react-icons/fa"; // Seat icon
 
@@ -8,6 +8,8 @@ const ReservationPage = () => {
   const [bus, setBus] = useState(null);
   const [reservations, setReservations] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch bus details and reservations
   useEffect(() => {
@@ -42,27 +44,39 @@ const ReservationPage = () => {
   };
 
   const handleReservation = async () => {
-    try {
-      for (const seat of selectedSeats) {
-        await axios.post("http://localhost:5000/api/reservations", {
-          busId: id,
-          seatNumber: seat,
-          passengerName: "John Doe", // Replace with logged-in user's name
-          passengerId: "675bc727317e945aa3915b90", // Replace with logged-in user's ID
-          date: new Date().toISOString().split("T")[0], // Current date
-        });
-      }
-      alert("Reservation successful!");
-      setSelectedSeats([]); // Clear selected seats
-
-      // Refresh reservations
-      const res = await axios.get(`http://localhost:5000/api/reservations/${id}`);
-      setReservations(res.data);
-    } catch (err) {
-      alert(err.response?.data?.message || "Reservation failed");
+    if (selectedSeats.length === 0) {
+      alert("Please select at least one seat.");
+      return;
     }
-  };
 
+    navigate("/passenger-info", {
+      state: { bus, selectedSeats }, // Pass data to the next page
+    });
+
+    setLoading(true);
+    // try {
+    //   const reservedSeats = [];
+    //   for (const seat of selectedSeats) {
+    //     const res = await axios.post("http://localhost:5000/api/reservations", {
+    //       busId: id,
+    //       seatNumber: seat,
+    //       passengerName: "John Doe", // Replace with logged-in user's name
+    //       passengerId: "675bc727317e945aa3915b90", // Replace with logged-in user's ID
+    //       date: new Date().toISOString().split("T")[0], // Current date
+    //     });
+    //     reservedSeats.push(res.data); // Store reservation data for passing to the next page
+    //   }
+  
+    //   // Redirect to PassengerInfoPage and pass reservation details
+    //   navigate("/passenger-info", {
+    //     state: { bus, selectedSeats, reservedSeats }, // Pass data to the next page
+    //   });
+    // } catch (err) {
+    //   alert(err.response?.data?.message || "Reservation failed");
+    // } finally {
+    //   setLoading(false);
+    // }
+  };
   if (!bus) return <p>Loading bus details...</p>;
 
   const isSeatReserved = (seat) =>
@@ -163,10 +177,13 @@ const ReservationPage = () => {
 
           {/* Reservation Button */}
           <button
-            className="w-full bg-purple-500 text-white py-2 px-4 rounded-md mt-6 hover:bg-purple-600 transition"
+            className={`w-full py-2 px-4 rounded-md mt-6 ${
+              loading ? "bg-gray-400 cursor-not-allowed" : "bg-purple-500 hover:bg-purple-600 text-white"
+            }`}
             onClick={handleReservation}
+            disabled={loading}
           >
-            Reserve Seats
+            {loading ? "Processing..." : "Reserve Seats"}
           </button>
         </div>
       </div>
