@@ -106,16 +106,36 @@ const createReservation = async (req, res) => {
 // Verify QR Code
 const verifyQRCode = async (req, res) => {
   try {
-    const { reservationId } = req.params;
+    const { reservationIds, busNumber, date } = req.body;
 
-    const reservation = await Reservation.findOne({ _id: reservationId }).populate("busId");
-    if (!reservation) {
-      return res.status(404).json({ message: "Invalid QR Code or Reservation not found" });
+    // Validate inputs
+    if (!reservationIds || !busNumber || !date) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    res.status(200).json(reservation);
-  } catch (error) {
-    res.status(500).json({ message: "Error verifying QR Code", error });
+    // Fetch reservations matching the reservation IDs
+    const reservations = await Reservation.find({ _id: { $in: reservationIds } });
+
+    if (reservations.length === 0) {
+      return res.status(404).json({ message: "No matching reservations found" });
+    }
+
+    // Validate bus number, date, and seat information
+    const isValid = reservations.every((reservation) => {
+      return reservation.date === date && reservation.busNumber === busNumber;
+    });
+
+    if (!isValid) {
+      return res.status(400).json({ message: "Reservation data does not match" });
+    }
+
+    res.status(200).json({
+      message: "Reservation verified successfully",
+      reservations,
+    });
+  } catch (err) {
+    console.error("Error verifying QR Code:", err);
+    res.status(500).json({ message: "Failed to verify QR Code" });
   }
 };
 
