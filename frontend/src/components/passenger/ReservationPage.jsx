@@ -10,12 +10,13 @@ const ReservationPage = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch bus details and reservations
   useEffect(() => {
     const fetchBusDetails = async () => {
       try {
-        const busResponse = await axios.get(`http://localhost:5000/api/buses/${id}`);
+        const busResponse = await axios.get(`${apiBaseUrl}/buses/${id}`);
         setBus(busResponse.data);
       } catch (err) {
         console.error("Failed to fetch bus details:", err);
@@ -24,7 +25,8 @@ const ReservationPage = () => {
 
     const fetchReservations = async () => {
       try {
-        const reservationResponse = await axios.get(`http://localhost:5000/api/reservations/${id}`);
+        
+        const reservationResponse = await axios.get(`${apiBaseUrl}/reservations/${id}`);
         setReservations(reservationResponse.data);
       } catch (err) {
         console.error("Failed to fetch reservations:", err);

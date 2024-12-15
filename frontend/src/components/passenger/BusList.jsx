@@ -6,10 +6,14 @@ const BusList = () => {
   const [buses, setBuses] = useState([]); // Original bus data from API
   const [filteredBuses, setFilteredBuses] = useState([]); // Filtered buses for display
   const [searchTerm, setSearchTerm] = useState(""); // Search input value
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+  
 
   // Fetch buses from API
   useEffect(() => {
-    axios.get("http://localhost:5000/api/buses").then((res) => {
+    
+    axios.get(`${apiBaseUrl}/buses`).then((res) => {
       setBuses(res.data);
       setFilteredBuses(res.data); // Initialize with full data
     });
