@@ -13,6 +13,6 @@ router.get("/:busId", getReservationsByBusId);
 router.post("/", createReservation);
 
 // Route to verify QR Code
-router.get("/verify/:reservationId", verifyQRCode);
+router.post("/verify", verifyQRCode);
 
 module.exports = router;
