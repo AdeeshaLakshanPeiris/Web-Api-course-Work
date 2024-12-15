@@ -22,7 +22,7 @@ require('dotenv').config();
 
 // MongoDB Connection
 
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/busReservation";
+const mongoURI = process.env.MONGO_URI;
 
 
 mongoose

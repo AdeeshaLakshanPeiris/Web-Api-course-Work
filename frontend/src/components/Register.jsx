@@ -9,7 +9,8 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/users/register", { name, email, password, role });
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const res = await axios.post(`${apiBaseUrl}/users/register`, { name, email, password, role });
       alert(res.data.message);
     } catch (err) {
       alert(err.response.data.message);
