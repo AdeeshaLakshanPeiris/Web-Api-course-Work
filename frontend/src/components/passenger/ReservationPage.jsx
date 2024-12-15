@@ -54,28 +54,7 @@ const ReservationPage = () => {
     });
 
     setLoading(true);
-    // try {
-    //   const reservedSeats = [];
-    //   for (const seat of selectedSeats) {
-    //     const res = await axios.post("http://localhost:5000/api/reservations", {
-    //       busId: id,
-    //       seatNumber: seat,
-    //       passengerName: "John Doe", // Replace with logged-in user's name
-    //       passengerId: "675bc727317e945aa3915b90", // Replace with logged-in user's ID
-    //       date: new Date().toISOString().split("T")[0], // Current date
-    //     });
-    //     reservedSeats.push(res.data); // Store reservation data for passing to the next page
-    //   }
-  
-    //   // Redirect to PassengerInfoPage and pass reservation details
-    //   navigate("/passenger-info", {
-    //     state: { bus, selectedSeats, reservedSeats }, // Pass data to the next page
-    //   });
-    // } catch (err) {
-    //   alert(err.response?.data?.message || "Reservation failed");
-    // } finally {
-    //   setLoading(false);
-    // }
+   
   };
   if (!bus) return <p>Loading bus details...</p>;
 
