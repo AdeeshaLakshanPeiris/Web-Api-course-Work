@@ -14,6 +14,7 @@ const PassengerInfoPage = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   if (!bus || !selectedSeats) {
     return <p>No reservation data available. Please reserve your seats first.</p>;
@@ -53,7 +54,7 @@ const PassengerInfoPage = () => {
       };
 
       // Send reservation data to the backend
-      const res = await axios.post("http://localhost:5000/api/reservations", reservationData);
+      const res = await axios.post(`${apiBaseUrl}/reservations`, reservationData);
 
       
         // Extract QR Code from the response

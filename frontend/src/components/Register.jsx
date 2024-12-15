@@ -19,42 +19,89 @@ const Register = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Register</h1>
-      <input
-        type="text"
-        placeholder="Name"
-        className="border p-2 mb-2 w-full"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        className="border p-2 mb-2 w-full"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="border p-2 mb-2 w-full"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <select
-        className="border p-2 mb-2 w-full"
-        onChange={(e) => setRole(e.target.value)}
-        value={role}
-      >
-        <option value="admin">Admin</option>
-        <option value="driver">Driver</option>
-        <option value="passenger">Passenger</option>
-      </select>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+      <h1 className="text-3xl font-semibold text-gray-700 mb-6 text-center">
+        Create Your Account
+      </h1>
+  
+      <div className="space-y-4">
+        {/* Name Field */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Full Name
+          </label>
+          <input
+            type="text"
+            placeholder="Enter your full name"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+  
+        {/* Email Field */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Email Address
+          </label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+  
+        {/* Password Field */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="Create a strong password"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+  
+        {/* Role Selection */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Role
+          </label>
+          <select
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
+            onChange={(e) => setRole(e.target.value)}
+            value={role}
+          >
+            <option value="">Select a role</option>
+            <option value="admin">Admin</option>
+            <option value="driver">Driver</option>
+            <option value="passenger">Passenger</option>
+          </select>
+        </div>
+      </div>
+  
       <button
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        className="mt-6 w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200"
         onClick={handleRegister}
       >
         Register
       </button>
+  
+      <p className="mt-4 text-sm text-purple-500 text-center">
+        Already have an account?{" "}
+        <a
+          href="/login"
+          className="text-purple-500 hover:underline hover:text-purple-600"
+        >
+          Log In
+        </a>
+      </p>
     </div>
+  </div>
+  
   );
 };
 
