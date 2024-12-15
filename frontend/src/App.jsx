@@ -12,6 +12,7 @@ import PassengerInfoPage from "./components/passenger/ReservationInfoPage";
 import QRCodePage from "./components/passenger/QRCodePage";
 import Navbar from "./components/NavBar";
 import PublicRoute from "./Middleware/PublicRoute";
+import VerifyQRCode from "./components/driver/VerifyQRCode";
 
 
 
@@ -77,6 +78,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
               <Route
             path="/passenger-info"
             element={
@@ -86,6 +88,7 @@ const App = () => {
             }
           />
           <Route path="/qr-code" element={<QRCodePage/>} />
+          <Route path="/verify-code" element={< VerifyQRCode/>} />
         </Routes>
       </Router>
     </AuthProvider>
