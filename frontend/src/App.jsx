@@ -9,6 +9,7 @@ import AdminDashboard from "./components/admin/adminDashboard";
 import ReservationPage from "./components/passenger/ReservationPage";
 import BusList from "./components/passenger/BusList";
 import PassengerInfoPage from "./components/passenger/ReservationInfoPage";
+import QRCodePage from "./components/passenger/QRCodePage";
 
 const App = () => {
   return (
@@ -60,6 +61,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/qr-code" element={<QRCodePage/>} />
         </Routes>
       </Router>
     </AuthProvider>
