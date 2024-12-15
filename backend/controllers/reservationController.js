@@ -25,10 +25,10 @@ const getReservationsByBusId = async (req, res) => {
 // Create a new reservation
 const createReservation = async (req, res) => {
     try {
-      const { busId, seats, passengerDetails, userId, totalAmount, date } = req.body;
+      const { busId, seats, passengerDetails, busDetails, userId, totalAmount, date } = req.body;
   
       // Validate input
-      if (!busId || !seats || !passengerDetails || !userId || !totalAmount || !date) {
+      if (!busId || !seats || !passengerDetails || !userId || !totalAmount || !date ||  !busDetails) {
         return res.status(400).json({ message: "All fields are required" });
       }
   
@@ -56,6 +56,10 @@ const createReservation = async (req, res) => {
         passengerName: passengerDetails.fullName,
         passengerEmail: passengerDetails.email,
         passengerPhone: passengerDetails.phone,
+        busNumber: busDetails.number,
+        busRoute: busDetails.route,
+        busArrivalTime: busDetails.arrivalTime,
+        busDepartureTime: busDetails.departureTime,
         userId,
         date,
         totalAmount: totalAmount / seats.length, // Split amount per seat
@@ -64,7 +68,7 @@ const createReservation = async (req, res) => {
       const savedReservations = await Reservation.insertMany(reservations);
       const qrData = {
         reservationIds: savedReservations.map((r) => r._id),
-        busDetails: { route: passengerDetails.route, number: passengerDetails.number }, // Ensure this comes from request or related logic
+        busDetails: { route: busDetails.route, number: busDetails.number }, // Ensure this comes from request or related logic
         seats,
         passenger: passengerDetails,
         totalAmount,

@@ -2,7 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import QRCode from "qrcode";
+import { number } from "prop-types";
+
 
 const PassengerInfoPage = () => {
   const location = useLocation();
@@ -12,12 +13,13 @@ const PassengerInfoPage = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   if (!bus || !selectedSeats) {
     return <p>No reservation data available. Please reserve your seats first.</p>;
   }
+
+  console.log(bus);
 
   const handleReservation = async () => {
     if (!fullName || !email || !phone) {
@@ -33,6 +35,13 @@ const PassengerInfoPage = () => {
       const reservationData = {
         busId: bus._id,
         seats: selectedSeats, // Array of selected seats
+        busDetails:{
+          route:bus.route,
+          number:bus.number,       
+          departureTime:bus.departureTime,
+          arrivalTime:bus.arrivalTime,
+
+        },
         passengerDetails: {
           fullName,
           email,

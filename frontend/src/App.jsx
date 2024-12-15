@@ -10,15 +10,39 @@ import ReservationPage from "./components/passenger/ReservationPage";
 import BusList from "./components/passenger/BusList";
 import PassengerInfoPage from "./components/passenger/ReservationInfoPage";
 import QRCodePage from "./components/passenger/QRCodePage";
+import Navbar from "./components/NavBar";
+import PublicRoute from "./Middleware/PublicRoute";
+
+
 
 const App = () => {
   return (
     <AuthProvider>
+      
       <Router>
+      <Navbar />
         <Routes>
+       
           {/* Public Routes */}
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          
+           {/* Public Routes */}
+           <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+
 
           {/* Protected Routes */}
           <Route
