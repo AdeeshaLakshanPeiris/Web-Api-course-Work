@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext"; // Assuming you have AuthContext for managing authentication
 
 const AddBus = () => {
+  const { user } = useAuth(); // Get the logged-in user's data (e.g., driver ID)
   const [busDetails, setBusDetails] = useState({
     number: "",
     route: "",
@@ -36,8 +38,14 @@ const AddBus = () => {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/buses", busDetails);
+      const payload = {
+        ...busDetails,
+        driverId: user?.id, // Include the driver's ID from AuthContext
+      };
+console.log(payload);
+      const res = await axios.post("http://localhost:5000/api/buses", payload);
       alert(res.data.message);
+
       setBusDetails({
         number: "",
         route: "",

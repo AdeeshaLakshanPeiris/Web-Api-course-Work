@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddBus from "./AddBus";
 import VerifyQRCode from "./VerifyQRCode";
+import BusList from "./BusList";
 
 const DriverDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("addBus"); // Active component state
@@ -11,6 +12,8 @@ const DriverDashboard = () => {
         return <AddBus />;
       case "verifyQR":
         return <VerifyQRCode />;
+      case "busList":
+        return <BusList />;
       default:
         return <p>Select an option from the sidebar</p>;
     }
@@ -30,11 +33,19 @@ const DriverDashboard = () => {
           >
             Add Bus
           </button>
-          <button
+          {/* <button
             className={`w-full text-left px-4 py-2 rounded-lg ${
               activeComponent === "verifyQR" ? "bg-purple-800" : "hover:bg-purple-700"
             }`}
             onClick={() => setActiveComponent("verifyQR")}
+          >
+            Verify QR Codes
+          </button> */}
+          <button
+            className={`w-full text-left px-4 py-2 rounded-lg ${
+              activeComponent === "busList" ? "bg-purple-800" : "hover:bg-purple-700"
+            }`}
+            onClick={() => setActiveComponent("busList")}
           >
             Verify QR Codes
           </button>
