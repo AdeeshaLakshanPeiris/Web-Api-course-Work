@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { useModal } from "../context/ModalContext";
+import { useLoader } from "../context/LoaderContext";
 
 const Login = () => {
   const { login ,user } = useAuth();
@@ -11,13 +12,17 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { openSuccess, openAlert, openWarning } = useModal();
+  const { startLoading, stopLoading } = useLoader();
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   
   const handleLogin = async () => {
+    
 
     try {
       setLoading(true);
+      startLoading();
+      
       
       const res = await axios.post(`${apiBaseUrl}/users/login`, {
         email,
@@ -50,9 +55,11 @@ const Login = () => {
       }, 1500);
     } catch (err) {
       openAlert(err.response?.data?.message || "Login failed! Try again.");
+      stopLoading();
       // alert(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
+      stopLoading();
     }
   };
 
