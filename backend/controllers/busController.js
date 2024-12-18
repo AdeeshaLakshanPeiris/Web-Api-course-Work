@@ -4,28 +4,65 @@ const Bus = require("../models/Bus");
 // Get all buses
 const getAllBuses = async (req, res) => {
   try {
+    // Fetch all buses from the database
     const buses = await Bus.find();
-    res.json(buses);
+
+    // Map through buses and add full image URL
+    const busesWithImages = buses.map((bus) => ({
+      ...bus.toObject(), // Convert Mongoose document to plain object
+      image: bus.image ? `${req.protocol}://${req.get("host")}${bus.image}` : null, // Construct full image URL
+    }));
+
+    res.status(200).json(busesWithImages);
   } catch (err) {
+    console.error("Error fetching buses:", err);
     res.status(500).json({ message: "Failed to fetch buses" });
   }
 };
 
+
 // Add a new bus
 const addBus = async (req, res) => {
-  
   try {
     const { number, route, seats, departureTime, arrivalTime, date, driverId } = req.body;
 
+    // Validate required fields
     if (!number || !route || !seats || !departureTime || !arrivalTime || !date || !driverId) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const bus = new Bus({ number, route, seats, departureTime, arrivalTime, date, driverId });
+    // Handle image file (if uploaded)
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    // Create and save the bus
+    const bus = new Bus({
+      number,
+      route,
+      seats,
+      departureTime,
+      arrivalTime,
+      date,
+      driverId,
+      image: imagePath, // Save image path if provided
+    });
     await bus.save();
 
-    res.status(201).json({ message: "Bus added successfully", bus });
+     // Construct a full image URL in the response
+     const fullBusData = {
+      ...bus._doc,
+      image: imagePath ? `${req.protocol}://${req.get("host")}${imagePath}` : null,
+    };
+
+   
+    res.status(201).json({
+      message: "Bus added successfully",
+      bus: fullBusData,
+    });
+
+ 
+    
   } catch (error) {
+    console.error("Error adding bus:", error);
     res.status(500).json({ message: "Failed to add bus" });
   }
 };
@@ -45,8 +82,17 @@ const getBusById = async (req, res) => {
       return res.status(404).json({ message: "Bus not found" });
     }
 
-    res.json(bus);
+    // Add full URL for the image if it exists
+    const busWithImage = {
+      ...bus._doc,
+      image: bus.image
+        ? `${req.protocol}://${req.get("host")}${bus.image}`
+        : null,
+    };
+
+    res.json(busWithImage);
   } catch (err) {
+    console.error("Error fetching bus details:", err);
     res.status(500).json({ message: "Failed to fetch bus details" });
   }
 };
@@ -58,22 +104,32 @@ const getBusesByDriver = async (req, res) => {
 
   try {
     // Validate driverId
-    if (!driverId) {
-      return res.status(400).json({ message: "Driver ID is required" });
+    if (!mongoose.isValidObjectId(driverId)) {
+      return res.status(400).json({ message: "Invalid Driver ID" });
     }
 
     // Fetch buses assigned to the driver
     const buses = await Bus.find({ driverId });
 
+    // Check if buses are found
     if (buses.length === 0) {
       return res.status(404).json({ message: "No buses found for this driver" });
     }
 
-    res.status(200).json(buses);
+    // Map through buses to construct full image URLs
+    const busesWithImages = buses.map((bus) => ({
+      ...bus.toObject(), // Convert Mongoose document to plain object
+      image: bus.image ? `${req.protocol}://${req.get("host")}${bus.image}` : null, // Construct full image URL
+    }));
+
+    res.status(200).json(busesWithImages);
   } catch (err) {
+    console.error("Error fetching buses for driver:", err);
     res.status(500).json({ message: "Failed to fetch buses for this driver", error: err.message });
   }
 };
+
+
 const deleteBus = async (req, res) => {
   try {
     const { id } = req.params;

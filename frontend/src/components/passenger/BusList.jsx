@@ -34,19 +34,22 @@ const BusList = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <div className="max-w-7xl mx-auto">
+   <div>
+     
+    <div className="p-8 bg-gray-100 min-h-screen ">
+       
+      <div className="max-w-7xl mx-auto ">
         {/* Search and Filter Section */}
         <div className="flex items-center mb-8">
           <input
             type="text"
             placeholder="Search by Route, Bus Type, or Number..."
-            className="w-full max-w-md px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-purple-300"
+            className="w-full max-w-md px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-gray-300"
             value={searchTerm}
             onChange={handleSearch}
           />
           <button
-            className="ml-4 px-4 py-2 bg-purple-500 text-white rounded-md shadow hover:bg-purple-600"
+            className="ml-4 px-4 py-3 text-sm font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700"
             onClick={() => setFilteredBuses(buses)} // Reset search results
           >
             Reset
@@ -54,48 +57,78 @@ const BusList = () => {
         </div>
 
         {/* Bus Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredBuses.length > 0 ? (
-            filteredBuses.map((bus) => (
-              <div
-                key={bus._id}
-                className="bg-white border rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-              >
-                {/* Image Placeholder */}
-                <div className="h-48 bg-gray-200 flex items-center justify-center">
-                  <img
-                    src={bus.image || "https://via.placeholder.com/300x200"} // Replace with bus image URL or placeholder
-                    alt={bus.route}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
 
-                {/* Bus Details */}
-                <div className="p-4">
-                  <h2 className="text-lg font-semibold text-gray-800">{bus.route}</h2>
-                  <p className="text-sm text-gray-600">Seats: {bus.seats} Passengers</p>
-                  <p className="text-sm text-gray-600">Departure: {bus.departureTime}</p>
-                  <p className="text-sm text-gray-600">Arrival: {bus.arrivalTime}</p>
+        
+     
+<div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto ">
+ 
+ <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                  <div className="mt-4">
-                    <Link
-                      to={`/reservation/${bus._id}`}
-                      className="block w-full text-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition"
-                    >
-                      Reserve Seats
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 text-center col-span-3">
-              No buses match your search criteria.
-            </p>
-          )}
-        </div>
+ {filteredBuses.length > 0 ? (
+           filteredBuses.map((bus) => (
+  
+   <div className="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70"  key={bus._id}>
+     <div className="h-52 flex flex-col justify-center items-center bg-gray-600 rounded-t-xl overflow-hidden" >
+       
+
+       <img src= {bus.image} alt="" />
+       
+     </div>
+     <div className="p-4 md:p-6">
+       <span className="block mb-1 text-xs font-semibold uppercase text-gray-900  dark:text-blue-500">
+    
+       {bus.number}
+       </span>
+       <h3 className="text-xl font-semibold text-gray-800 dark:text-neutral-300 dark:hover:text-white">
+       {bus.route}
+       
+       </h3>
+       <p className="mt-3 text-gray-500 dark:text-neutral-500">
+       Seats: {bus.seats}
+       
+       </p>
+       <p className="mt-3 text-gray-500 dark:text-neutral-500">
+       
+       Departure: {bus.departureTime}
+       </p>
+       <p className="mt-3 text-gray-500 dark:text-neutral-500">
+      
+       Arrival: {bus.arrivalTime}
+       </p>
+     </div>
+     <div className="mt-auto flex border-t border-gray-200 divide-x text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700">
+       
+       <Link
+                     to={`/reservation/${bus._id}`}
+                     className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                   >
+                     Reserve Seats
+                   </Link>
+       
+       {/* <a className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-ee-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+         View API
+       </a> */}
+     </div>
+   </div>
+
+))
+) : (
+ <p className="text-gray-500 text-center col-span-3">
+   No buses match your search criteria.
+ </p>
+)}
+   
+
+  
+ </div>
+
+</div>
+        
       </div>
+
+
     </div>
+   </div>
   );
 };
 

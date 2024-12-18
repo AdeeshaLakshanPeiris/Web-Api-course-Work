@@ -29,7 +29,7 @@ const QRCodePage = () => {
         </p>
         <button
           onClick={() => navigate("/buses")}
-          className="w-full mt-6 py-2 px-4 rounded-md bg-purple-500 hover:bg-purple-600 text-white"
+          className="w-full mt-6 py-2 px-4 rounded-md text-white bg-gray-900 rounded-xl hover:bg-gray-700"
         >
           Back to Bus List
         </button>

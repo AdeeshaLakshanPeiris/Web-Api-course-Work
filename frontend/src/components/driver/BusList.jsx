@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import { useModal } from "../../context/ModalContext";
 
 const BusList = () => {
   const { user } = useAuth(); // Get logged-in driver's ID
@@ -9,16 +10,22 @@ const BusList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { openSuccess, openAlert, openWarning } = useModal();
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+ 
 
   
 
   useEffect(() => {
     const fetchDriverBuses = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/buses/driver/${user.id}`);
+        const res = await axios.get(`${apiBaseUrl}/buses/driver/${user.id}`);
         setBuses(res.data); // Set the filtered buses
+        console.log(buses.image);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch buses");
+        openAlert(err.response?.data?.message);
+        
       } finally {
         setLoading(false);
       }
@@ -37,12 +44,16 @@ const BusList = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+      
       <h2 className="text-3xl font-bold mb-6 text-gray-700">My Buses</h2>
+      
       {buses.length === 0 ? (
         <p>No buses found for this driver.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+         
           {buses.map((bus) => (
+            
             <div
               key={bus._id}
               onClick={() => handleOpenQR(bus._id)}
@@ -50,11 +61,12 @@ const BusList = () => {
             >
               <div className="relative">
                 <img
-                  src="https://source.unsplash.com/600x400/?bus" // Random bus image
+                  src={bus.image} // Random bus image
                   alt="Bus"
                   className="w-full h-40 object-cover"
                 />
-                <div className="absolute top-2 right-2 bg-purple-600 text-white px-3 py-1 rounded-lg text-xs">
+                
+                <div className="absolute top-2 right-2 bg-gray-800 text-white px-3 py-1 rounded-lg text-xs">
                   {new Date(bus.date).toLocaleDateString()}
                 </div>
               </div>
@@ -73,7 +85,7 @@ const BusList = () => {
                   <strong>Arrival:</strong> {bus.arrivalTime}
                 </p>
               </div>
-              <div className="bg-purple-600 text-white text-center py-2">
+              <div className="bg-gray-800 text-white text-center py-2">
                 <p className="font-semibold">Open QR Verification</p>
               </div>
             </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { QrReader } from "react-qr-reader"; // Corrected import
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useModal } from "../../context/ModalContext";
 
 const VerifyQRCode = () => {
   const [qrResult, setQrResult] = useState(null);
@@ -10,7 +11,10 @@ const VerifyQRCode = () => {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { openSuccess, openAlert, openWarning } = useModal();
   const { busId } = location.state || {};
+
   
 
   const handleVerify = async (scannedData) => {
@@ -21,7 +25,7 @@ const VerifyQRCode = () => {
   
       // Get busId passed from the previous page (assumes state navigation was used)
       // Send data including busId, reservationIds, and date
-      const res = await axios.post("http://localhost:5000/api/reservations/verify", {
+      const res = await axios.post(`${apiBaseUrl}/reservations/verify`, {
         reservationIds: parsedData.reservationIds,
         busId: busId, // Pass the busId for verification
         date: parsedData.date,
@@ -32,9 +36,12 @@ const VerifyQRCode = () => {
       setError(""); // Clear errors
       setShowModal(true); // Open modal
     } catch (err) {
+
       setError(err.response?.data?.message || "Verification failed");
       setVerificationResult("");
       setPassengerDetails(null);
+
+      openAlert(err.response?.data?.message)
     }
   };
 
@@ -51,7 +58,7 @@ const VerifyQRCode = () => {
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6 text-purple-600">QR Code Verification</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-600">QR Code Verification</h1>
 
       {/* QR Scanner */}
       <div className="w-72 h-72 mb-4 rounded-lg overflow-hidden shadow-lg bg-gray-200">

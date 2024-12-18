@@ -18,10 +18,13 @@ export const ModalProvider = ({ children }) => {
   const openSuccess = (message) => setModal({ isOpen: true, type: "success", message });
   const openAlert = (message) => setModal({ isOpen: true, type: "alert", message });
   const openWarning = (message) => setModal({ isOpen: true, type: "warning", message });
-  const closeModal = () => setModal({ isOpen: false, type: null, message: "" });
+  const openConfirm = (message, onConfirm, title = "Confirm Action") =>
+    setModal({ isOpen: true, type: "confirm", message, title, onConfirm });
 
+  const closeModal = () =>
+    setModal({ isOpen: false, type: null, message: "", title: "", onConfirm: null });
   return (
-    <ModalContext.Provider value={{ modal, openSuccess, openAlert, openWarning, closeModal }}>
+    <ModalContext.Provider value={{ modal, openSuccess, openAlert, openWarning,openConfirm, closeModal }}>
       {children}
     </ModalContext.Provider>
   );
