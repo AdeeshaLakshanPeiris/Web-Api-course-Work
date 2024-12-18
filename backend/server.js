@@ -20,7 +20,8 @@ app.use("/api/buses", busRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/drivers", driverRoutes); // Driver routes
 app.use("/api/accounts", accountRoutes); // Account routes
-
+// Static folder for uploaded images
+app.use("/uploads", express.static("uploads"));
 
 require('dotenv').config();
 

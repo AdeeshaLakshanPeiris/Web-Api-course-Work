@@ -8,6 +8,7 @@ const busSchema = new mongoose.Schema({
   arrivalTime: { type: String, required: true },
   date: { type: Date, required: true },
   driverId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the driver
+  image: { type: String }, // Optional image path
 });
 
 module.exports = mongoose.model("Bus", busSchema);

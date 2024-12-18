@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { number } from "prop-types";
+import { useModal } from "../../context/ModalContext";
 
 
 const PassengerInfoPage = () => {
@@ -14,6 +15,7 @@ const PassengerInfoPage = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const { openSuccess, openAlert, openWarning } = useModal();
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   if (!bus || !selectedSeats) {
@@ -24,7 +26,8 @@ const PassengerInfoPage = () => {
 
   const handleReservation = async () => {
     if (!fullName || !email || !phone) {
-      alert("Please fill in all passenger details.");
+      // alert("Please fill in all passenger details.");
+      openWarning("Please fill in all passenger details.");
       return;
     }
 
@@ -127,7 +130,7 @@ const PassengerInfoPage = () => {
             <p>
               <strong>Total No. of Seats:</strong> {selectedSeats.length}
             </p>
-            <p>
+            <p className="text-2xl">
               <strong>Total Amount:</strong> Rs. {selectedSeats.length * 750}
             </p>
           </div>
@@ -135,7 +138,7 @@ const PassengerInfoPage = () => {
           <button
             onClick={handleReservation}
             className={`w-full mt-6 py-2 px-4 rounded-md ${
-              loading ? "bg-gray-400 cursor-not-allowed" : "bg-purple-500 hover:bg-purple-600 text-white"
+              loading ? "bg-gray-400 cursor-not-allowed" : "text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700"
             }`}
             disabled={loading}
           >
@@ -143,6 +146,9 @@ const PassengerInfoPage = () => {
           </button>
 
         </div>
+
+      
+
       </div>
     </div>
   );

@@ -22,12 +22,13 @@ const DriverDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar Section */}
-      <aside className="w-64 bg-purple-600 text-white flex-shrink-0 p-6">
+      <aside className="w-64 bg-gray-600 text-white flex-shrink-0 p-6">
+    
         <h1 className="text-2xl font-bold mb-6">Driver Dashboard</h1>
         <nav className="space-y-4">
           <button
             className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeComponent === "addBus" ? "bg-purple-800" : "hover:bg-purple-700"
+              activeComponent === "addBus" ? "bg-gray-900" : "hover:bg-gray-700"
             }`}
             onClick={() => setActiveComponent("addBus")}
           >
@@ -43,7 +44,7 @@ const DriverDashboard = () => {
           </button> */}
           <button
             className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeComponent === "busList" ? "bg-purple-800" : "hover:bg-purple-700"
+              activeComponent === "busList" ? "bg-gray-900" : "hover:bg-gray-700"
             }`}
             onClick={() => setActiveComponent("busList")}
           >
@@ -54,6 +55,7 @@ const DriverDashboard = () => {
 
       {/* Main Content Section */}
       <main className="flex-1 bg-white rounded-lg shadow-md m-6 p-6">
+     
         {renderContent()}
       </main>
     </div>
