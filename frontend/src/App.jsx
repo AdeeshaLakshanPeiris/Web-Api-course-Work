@@ -13,22 +13,36 @@ import QRCodePage from "./components/passenger/QRCodePage";
 import Navbar from "./components/NavBar";
 import PublicRoute from "./Middleware/PublicRoute";
 import VerifyQRCode from "./components/driver/VerifyQRCode";
+import { HomePage } from "./pages/homePage";
+import { ModalProvider } from "./context/ModalContext";
+import Modal from "./components/messages/Modal";
 
 
 
 const App = () => {
   return (
-    <AuthProvider>
+   <ModalProvider>
+    
+     <AuthProvider>
       
       <Router>
       <Navbar />
+      <Modal/>
         <Routes>
        
           {/* Public Routes */}
+          <Route
+            path="/"
+            element={
+              
+                <HomePage />
+             
+            }
+          />
           
            {/* Public Routes */}
            <Route
-            path="/"
+            path="/login"
             element={
               <PublicRoute>
                 <Login />
@@ -92,6 +106,7 @@ const App = () => {
         </Routes>
       </Router>
     </AuthProvider>
+   </ModalProvider>
   );
 };
 

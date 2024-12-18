@@ -15,13 +15,13 @@ const ProtectedRoute = ({ children, role }) => {
   // If user is not logged in, redirect to login
   if (!user) {
     console.warn("User not logged in, redirecting to login.");
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // If user role does not match, redirect to login
   if (role && user.role !== role) {
     console.warn(`User role (${user.role}) does not match required role (${role}), redirecting.`);
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // If all checks pass, render the protected component
