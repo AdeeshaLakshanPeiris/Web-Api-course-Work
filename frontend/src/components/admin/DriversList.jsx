@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useModal } from "../../context/ModalContext";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 const DriversList = () => {
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedDriver, setSelectedDriver] = useState(null);
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+ const { startLoading, stopLoading } = useLoader();
   const { openSuccess, openAlert, openWarning ,openConfirm } = useModal();
   const [busDetails, setBusDetails] = useState({
     number: "",
@@ -22,11 +24,13 @@ const DriversList = () => {
   useEffect(() => {
     const fetchDrivers = async () => {
       try {
-        const res = await axios.get(`${apiBaseUrl}/drivers`);
+        startLoading();
+        const res = await api.get("/drivers");
         setDrivers(res.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch drivers");
       } finally {
+        stopLoading();
         setLoading(false);
       }
     };
@@ -40,7 +44,7 @@ const DriversList = () => {
       async () => {
         try {
           // Perform the delete operation
-          await axios.delete(`${apiBaseUrl}/drivers/${driverId}`);
+          await api.delete(`/drivers/${driverId}`);
           setDrivers((prev) => prev.filter((driver) => driver._id !== driverId));
           openSuccess("Driver deleted successfully!");
         } catch (err) {
@@ -85,7 +89,7 @@ const DriversList = () => {
     if (image) formData.append("image", image);
 
     try {
-      await axios.post(`${apiBaseUrl}/buses`, formData, {
+      await api.post("/buses", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -3,6 +3,7 @@ import { useState } from "react";
 import Success from "./messages/Success";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../context/ModalContext";
+import api from "../api/api";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -14,8 +15,8 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      const res = await axios.post(`${apiBaseUrl}/users/register`, { name, email, password, role });
+      
+      const res = await api.post("/users/register", { name, email, password, role });
       // alert(res.data.message);
       openSuccess("Register successful! Redirecting...");
       setTimeout(() => {

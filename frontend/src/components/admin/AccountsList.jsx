@@ -1,21 +1,26 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 const AccountsList = () => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { startLoading, stopLoading } = useLoader();
 
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/accounts");
+        startLoading();
+        const res = await api.get("/accounts");
         setAccounts(res.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch accounts");
       } finally {
         setLoading(false);
+        stopLoading();
       }
     };
 

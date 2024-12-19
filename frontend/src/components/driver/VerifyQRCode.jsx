@@ -3,6 +3,8 @@ import { QrReader } from "react-qr-reader"; // Corrected import
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useModal } from "../../context/ModalContext";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 const VerifyQRCode = () => {
   const [qrResult, setQrResult] = useState(null);
@@ -14,6 +16,7 @@ const VerifyQRCode = () => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const { openSuccess, openAlert, openWarning } = useModal();
   const { busId } = location.state || {};
+  const { startLoading, stopLoading } = useLoader();
 
   
 
@@ -21,11 +24,12 @@ const VerifyQRCode = () => {
     try {
       const parsedData = JSON.parse(scannedData);
 
-      console.log(parsedData)
+      console.log(parsedData);
+      startLoading();
   
       // Get busId passed from the previous page (assumes state navigation was used)
       // Send data including busId, reservationIds, and date
-      const res = await axios.post(`${apiBaseUrl}/reservations/verify`, {
+      const res = await api.post("/reservations/verify", {
         reservationIds: parsedData.reservationIds,
         busId: busId, // Pass the busId for verification
         date: parsedData.date,
@@ -42,6 +46,10 @@ const VerifyQRCode = () => {
       setPassengerDetails(null);
 
       openAlert(err.response?.data?.message)
+    }
+    finally{
+      stopLoading();
+
     }
   };
 

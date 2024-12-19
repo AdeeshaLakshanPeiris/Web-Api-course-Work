@@ -3,19 +3,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Custom hook for authentication context
 import { useState } from "react";
 import { useModal } from "../context/ModalContext";
+import { useLoader } from "../context/LoaderContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth(); // Extract user and logout function from AuthContext
   const navigate = useNavigate(); // Navigation hook for redirection
   const [menuExpanded, setMenuExpanded] = useState(false); // State for mobile menu toggle
   const { openSuccess, openAlert, openWarning ,openConfirm } = useModal();
-
+  const { startLoading, stopLoading } = useLoader();
   const handleLogout = () => {
     openConfirm(
       "Are you sure you want to log out?", // Confirmation message
       () => {
         // Callback to perform logout
+        startLoading();
         logout(); // Clear user data from context
+        stopLoading();
         navigate("/"); // Redirect to home or login page
       },
       "Confirm Logout" // Optional title for the confirmation modal

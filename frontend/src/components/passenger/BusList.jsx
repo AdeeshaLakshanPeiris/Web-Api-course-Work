@@ -1,19 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 const BusList = () => {
   const [buses, setBuses] = useState([]); // Original bus data from API
   const [filteredBuses, setFilteredBuses] = useState([]); // Filtered buses for display
   const [searchTerm, setSearchTerm] = useState(""); // Search input value
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { startLoading, stopLoading } = useLoader();
+  
 
   
 
   // Fetch buses from API
   useEffect(() => {
     
-    axios.get(`${apiBaseUrl}/buses`).then((res) => {
+    api.get("/buses").then((res) => {
       setBuses(res.data);
       setFilteredBuses(res.data); // Initialize with full data
     });
@@ -94,6 +97,10 @@ const BusList = () => {
        <p className="mt-3 text-gray-500 dark:text-neutral-500">
       
        Arrival: {bus.arrivalTime}
+       </p>
+       <p className="mt-3 text-gray-500 dark:text-neutral-500">
+      
+       Date: {bus.date}
        </p>
      </div>
      <div className="mt-auto flex border-t border-gray-200 divide-x text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700">

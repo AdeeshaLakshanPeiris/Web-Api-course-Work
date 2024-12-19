@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaChair } from "react-icons/fa"; // Seat icon
 import { useModal } from "../../context/ModalContext";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 
 const ReservationPage = () => {
@@ -13,28 +15,40 @@ const ReservationPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
    const { openSuccess, openAlert, openWarning } = useModal();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+   const { startLoading, stopLoading } = useLoader();
+ 
 
   // Fetch bus details and reservations
   useEffect(() => {
     const fetchBusDetails = async () => {
       try {
-        const busResponse = await axios.get(`${apiBaseUrl}/buses/${id}`);
+        startLoading();
+        const busResponse = await api.get(`/buses/${id}`);
         setBus(busResponse.data);
       } catch (err) {
         openAlert("Failed to fetch bus details:", err);
         // console.error("Failed to fetch bus details:", err);
       }
+      finally{
+
+
+        stopLoading();
+
+      }
     };
 
     const fetchReservations = async () => {
       try {
+        startLoading();
         
-        const reservationResponse = await axios.get(`${apiBaseUrl}/reservations/${id}`);
+        const reservationResponse = await api.get(`/reservations/${id}`);
         setReservations(reservationResponse.data);
       } catch (err) {
         openAlert("Failed to fetch reservations:", err);
         // console.error("Failed to fetch reservations:", err);
+      }
+      finally{
+        stopLoading();
       }
     };
 

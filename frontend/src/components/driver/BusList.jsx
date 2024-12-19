@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useModal } from "../../context/ModalContext";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 const BusList = () => {
   const { user } = useAuth(); // Get logged-in driver's ID
@@ -11,7 +13,7 @@ const BusList = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { openSuccess, openAlert, openWarning } = useModal();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { startLoading, stopLoading } = useLoader();
  
 
   
@@ -19,7 +21,8 @@ const BusList = () => {
   useEffect(() => {
     const fetchDriverBuses = async () => {
       try {
-        const res = await axios.get(`${apiBaseUrl}/buses/driver/${user.id}`);
+        startLoading();
+        const res = await api.get(`/buses/driver/${user.id}`);
         setBuses(res.data); // Set the filtered buses
         console.log(buses.image);
       } catch (err) {
@@ -27,6 +30,7 @@ const BusList = () => {
         openAlert(err.response?.data?.message);
         
       } finally {
+        stopLoading();
         setLoading(false);
       }
     };

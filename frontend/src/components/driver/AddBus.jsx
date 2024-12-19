@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext"; // Assuming you have AuthContext for managing authentication
 import { useModal } from "../../context/ModalContext";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 const AddBus = () => {
   const { user } = useAuth(); // Get the logged-in user's data (e.g., driver ID)
@@ -18,7 +20,8 @@ const AddBus = () => {
   const [loading, setLoading] = useState(false); // Loading state for the button
   const [error, setError] = useState(""); // Error message
   const { openSuccess, openAlert, openWarning } = useModal();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { startLoading, stopLoading } = useLoader();
+  
 
   // Handle input changes for text fields
   const handleInputChange = (e) => {
@@ -52,6 +55,10 @@ const AddBus = () => {
     setError("");
 
     try {
+      
+
+      startLoading();
+
       const formData = new FormData();
       formData.append("number", busDetails.number);
       formData.append("route", busDetails.route);
@@ -64,7 +71,7 @@ const AddBus = () => {
 
       console.log(formData);
 
-      const res = await axios.post(`${apiBaseUrl}/buses`, formData, {
+      const res = await api.post("/buses", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -87,6 +94,7 @@ const AddBus = () => {
       openAlert(err.response?.data?.message);
     } finally {
       setLoading(false);
+      stopLoading();
     }
   };
 
