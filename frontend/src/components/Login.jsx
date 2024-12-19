@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { useModal } from "../context/ModalContext";
+import { useLoader } from "../context/LoaderContext";
+import api from "../api/api";
 
 const Login = () => {
   const { login ,user } = useAuth();
@@ -11,19 +13,23 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { openSuccess, openAlert, openWarning } = useModal();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { startLoading, stopLoading } = useLoader();
 
   
   const handleLogin = async () => {
+    
 
     try {
       setLoading(true);
+      startLoading();
       
-      const res = await axios.post(`${apiBaseUrl}/users/login`, {
+      
+      const response = await api.post('/users/login', {
         email,
         password,
       });
-      const { token } = res.data;
+      
+      const { user, token } = response.data;
 
       // Decode the token to get user data
       const decodedToken = JSON.parse(atob(token.split(".")[1]));
@@ -34,7 +40,7 @@ const Login = () => {
       };
 
       // Save user data to AuthContext
-      login(userData);
+      login(userData,token);
 
       openSuccess("Login successful! Redirecting...");
       setTimeout(() => {
@@ -50,9 +56,11 @@ const Login = () => {
       }, 1500);
     } catch (err) {
       openAlert(err.response?.data?.message || "Login failed! Try again.");
+      stopLoading();
       // alert(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
+      stopLoading();
     }
   };
 

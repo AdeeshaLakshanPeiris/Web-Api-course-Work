@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { number } from "prop-types";
 import { useModal } from "../../context/ModalContext";
+import api from "../../api/api";
+import { useLoader } from "../../context/LoaderContext";
 
 
 const PassengerInfoPage = () => {
@@ -16,7 +18,8 @@ const PassengerInfoPage = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const { openSuccess, openAlert, openWarning } = useModal();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const { startLoading, stopLoading } = useLoader();
+  
 
   if (!bus || !selectedSeats) {
     return <p>No reservation data available. Please reserve your seats first.</p>;
@@ -35,6 +38,7 @@ const PassengerInfoPage = () => {
     
 
     try {
+      startLoading();
       // Create a reservation object containing all details
       const reservationData = {
         busId: bus._id,
@@ -57,7 +61,7 @@ const PassengerInfoPage = () => {
       };
 
       // Send reservation data to the backend
-      const res = await axios.post(`${apiBaseUrl}/reservations`, reservationData);
+      const res = await api.post("/reservations", reservationData);
 
       
         // Extract QR Code from the response
@@ -70,6 +74,7 @@ const PassengerInfoPage = () => {
     } catch (err) {
       alert(err.response?.data?.message || "Reservation failed");
     } finally {
+      stopLoading();
       setLoading(false);
     }
   };
