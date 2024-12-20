@@ -23,7 +23,7 @@ const Register = () => {
         navigate('/login');
       }, 1500);
     } catch (err) {
-      openAlert(err.response?.data?.message || "Login failed! Try again.");
+      openAlert(err.response?.data?.message || " Register failed! Try again.");
       // alert(err.response.data.message);
 
     }
