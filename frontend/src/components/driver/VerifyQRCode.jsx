@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { QrReader } from "react-qr-reader"; // Corrected import
+import QrReader from 'react-qr-scanner'; // Correct import
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useModal } from "../../context/ModalContext";
