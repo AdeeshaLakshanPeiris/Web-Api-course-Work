@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import prelinePlugin from 'preline/plugin';
+
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -9,6 +11,6 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("preline/plugin"),
+    prelinePlugin,
   ],
 };
