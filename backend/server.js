@@ -6,7 +6,8 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/authRoutes");
 const busRoutes = require("./routes/busRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
-
+const driverRoutes = require("./routes/driverRoutes");
+const accountRoutes = require("./routes/accountRoutes");
 const app = express();
 
 // Middleware
@@ -17,12 +18,16 @@ app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
 app.use("/api/buses", busRoutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/drivers", driverRoutes); // Driver routes
+app.use("/api/accounts", accountRoutes); // Account routes
+// Static folder for uploaded images
+app.use("/uploads", express.static("uploads"));
 
 require('dotenv').config();
 
 // MongoDB Connection
 
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/busReservation";
+const mongoURI = process.env.MONGO_URI;
 
 
 mongoose

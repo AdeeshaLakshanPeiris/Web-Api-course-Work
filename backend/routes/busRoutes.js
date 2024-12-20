@@ -1,54 +1,39 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const Bus = require("../models/Bus");
+const multer = require("multer");
 const router = express.Router();
+const { getAllBuses, addBus, getBusById,getBusesByDriver,deleteBus } = require("../controllers/busController");
+const verifyToken = require("../middlewares/authMiddleware");
 
-// Get all buses
-router.get("/", async (req, res) => {
+// Route to get all buses
+router.get("/",verifyToken, getAllBuses);
 
-  try {
-    const buses = await Bus.find();
-    res.json(buses);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch buses" });
-  }
 
-});
 
-// Add a new bus
-router.post("/", async (req, res) => {
+// Configure Multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/"); // Directory to store uploaded files
+    },
+    filename: (req, file, cb) => {
+      const uniqueName = `${Date.now()}-${file.originalname}`;
+      cb(null, uniqueName);
+    },
+  });
+  const upload = multer({ storage });
 
-  try {
-    const { number, route, seats, departureTime, arrivalTime } = req.body;
-    const bus = new Bus({ number, route, seats, departureTime, arrivalTime });
-    await bus.save();
-    res.status(201).json({ message: "Bus added successfully", bus });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to add bus" });
-  }
 
-});
+// Route to add a new bus
+router.post("/",verifyToken, upload.single("image"),addBus);
 
-// Get a specific bus by ID
-router.get("/:id", async (req, res) => {
 
-  try {
-    const { id } = req.params;
+// Route to get a specific bus by ID
+router.get("/:id", verifyToken,getBusById);
 
-    // Check if the ID is valid
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ message: "Invalid bus ID" });
-    }
+// Route to fetch buses for a specific driver
+router.get("/driver/:driverId", verifyToken,getBusesByDriver);
 
-    const bus = await Bus.findById(id);
-    if (!bus) {
-      return res.status(404).json({ message: "Bus not found" });
-    }
-    res.json(bus);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch bus details" });
-  }
-
-});
+// Delete a bus (admin or specific driver access)
+router.delete("/:id",verifyToken, deleteBus);
 
 module.exports = router;
+
