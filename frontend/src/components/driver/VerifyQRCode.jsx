@@ -1,6 +1,5 @@
 import { useState } from "react";
-import QrReader from 'react-qr-scanner'; // Correct import
-import axios from "axios";
+import QrReader from "react-qr-scanner"; // Correct import
 import { useLocation } from "react-router-dom";
 import { useModal } from "../../context/ModalContext";
 import api from "../../api/api";
@@ -12,56 +11,52 @@ const VerifyQRCode = () => {
   const [passengerDetails, setPassengerDetails] = useState(null);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const location = useLocation();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  const { openSuccess, openAlert, openWarning } = useModal();
-  const { busId } = location.state || {};
-  const { startLoading, stopLoading } = useLoader();
 
-  
+  const location = useLocation();
+  const { busId } = location.state || {};
+  const { openSuccess, openAlert } = useModal();
+  const { startLoading, stopLoading } = useLoader();
 
   const handleVerify = async (scannedData) => {
     try {
       const parsedData = JSON.parse(scannedData);
+      if (!busId) throw new Error("Bus ID is missing. Please try again.");
 
-      console.log(parsedData);
       startLoading();
-  
-      // Get busId passed from the previous page (assumes state navigation was used)
-      // Send data including busId, reservationIds, and date
+
       const res = await api.post("/reservations/verify", {
         reservationIds: parsedData.reservationIds,
-        busId: busId, // Pass the busId for verification
+        busId,
         date: parsedData.date,
       });
-  
-      setVerificationResult(res.data.message); // Backend success message
-      setPassengerDetails(res.data.reservations); // Passenger and seat details
-      setError(""); // Clear errors
-      setShowModal(true); // Open modal
-    } catch (err) {
 
-      setError(err.response?.data?.message || "Verification failed");
+      setVerificationResult(res.data.message);
+      setPassengerDetails(res.data.reservations);
+      setError("");
+      setShowModal(true);
+      openSuccess(res.data.message);
+    } catch (err) {
+      const message = err.response?.data?.message || err.message || "Verification failed.";
+      console.error("Verification Error:", message);
+      setError(message);
       setVerificationResult("");
       setPassengerDetails(null);
-
-      openAlert(err.response?.data?.message)
-    }
-    finally{
+      openAlert(message);
+    } finally {
       stopLoading();
-
     }
   };
 
   const handleScan = (result) => {
     if (result?.text) {
       setQrResult(result.text);
-      handleVerify(result.text); // Verify the scanned data
+      handleVerify(result.text);
     }
   };
 
-  const handleError = () => {
-    setError("Failed to scan QR code. Please try again.");
+  const handleError = (scanError) => {
+    console.error("QR Scanner Error:", scanError);
+    setError("Failed to scan QR code. Ensure it's visible and try again.");
   };
 
   return (
@@ -70,14 +65,16 @@ const VerifyQRCode = () => {
 
       {/* QR Scanner */}
       <div className="w-72 h-72 mb-4 rounded-lg overflow-hidden shadow-lg bg-gray-200">
-        <QrReader
-          onResult={(result, error) => {
-            if (result) handleScan(result);
-            if (error) handleError();
-          }}
-          constraints={{ facingMode: "environment" }}
-          style={{ width: "100%", height: "100%" }}
-        />
+      <QrReader
+  onScan={(result) => handleScan(result)}
+  onError={(error) => handleError(error)}
+  constraints={{
+    video: {
+      facingMode: "environment", // Use "environment" for rear camera (on phones)
+    },
+  }}
+  style={{ width: "100%", height: "100%" }}
+/>
       </div>
 
       {/* Error Message */}
