@@ -22,6 +22,8 @@ const BusList = () => {
     });
   }, []);
 
+  
+
   // Handle search input change
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
