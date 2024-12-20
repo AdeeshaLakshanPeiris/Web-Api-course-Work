@@ -102,7 +102,7 @@ const Navbar = () => {
                   Customer Login
                 </Link>
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="inline-flex items-center px-6 py-3 text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700"
                 >
                   Log in

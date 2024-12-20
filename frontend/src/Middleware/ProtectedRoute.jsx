@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children, role }) => {
   const token = localStorage.getItem("authToken");
   if (!user || !token) {
     console.warn("User not logged in or token missing, redirecting to login.");
-    openAlert("User not logged in or token missing, redirecting to login.");;
+    // openAlert("User not logged in or token missing, redirecting to login.");
     logout(); // Clear session
     return <Navigate to="/login" replace />;
   }
@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children, role }) => {
   // Validate token expiration
   if (!isTokenValid(token)) {
     console.warn("Token expired, redirecting to login.");
-    openAlert("Your session has expired. Please log in again.");
+    // openAlert("Your session has expired. Please log in again.");
     logout(); // Clear session
     return <Navigate to="/login" replace />;
   }
