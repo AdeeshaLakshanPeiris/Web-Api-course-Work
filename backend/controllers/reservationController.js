@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Reservation = require("../models/Reservation");
 const { generateQRCode } = require("../utils/qrUtil");
 const sendEmail = require("../utils/emailUtil");
+const Bus = require("../models/Bus");
 
 const generateEmailTemplate = require("../simulation/emailTemplate");
 // Get all reservations for a specific bus
@@ -133,8 +134,47 @@ const verifyQRCode = async (req, res) => {
   }
 };
 
+const getReservationBusDetails = async (req, res) => {
+  try {
+    const { busId } = req.params;
+
+    // Validate bus ID
+    if (!mongoose.isValidObjectId(busId)) {
+      return res.status(400).json({ message: "Invalid bus ID" });
+    }
+
+    // Fetch all reservations
+    const reservations = await Reservation.find({ busId });
+
+    // Fetch bus details
+    const busDetails = await Bus.findById(busId);
+    if (!busDetails) {
+      return res.status(404).json({ message: "Bus not found" });
+    }
+
+    const totalSeats = busDetails.totalSeats;
+    const reservedSeats = reservations.map((res) => res.seatNumber);
+    const availableSeats = Array.from({ length: totalSeats }, (_, i) => i + 1).filter(
+      (seat) => !reservedSeats.includes(seat)
+    );
+
+    res.status(200).json({
+      busDetails,
+      reservations,
+      totalSeats,
+      reservedSeats,
+      availableSeats,
+    });
+  } catch (err) {
+    console.error("Error fetching admin bus details:", err.message);
+    res.status(500).json({ message: "Failed to fetch bus details" });
+  }
+};
+
+
 module.exports = {
   getReservationsByBusId,
   createReservation,
   verifyQRCode,
+  getReservationBusDetails,
 };

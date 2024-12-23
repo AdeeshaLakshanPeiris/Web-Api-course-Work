@@ -130,7 +130,7 @@ const DriversList = () => {
                 <strong>Email:</strong> {driver.email}
               </p>
               <p>
-                <strong>Phone:</strong> {driver.phone}
+                {/* <strong>Phone:</strong> {driver.phone} */}
               </p>
               <div className="mt-2 flex space-x-2">
                 <button
@@ -153,131 +153,163 @@ const DriversList = () => {
 
       {/* Assign Bus Modal */}
       {selectedDriver && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg relative">
-            <button
-              onClick={() => setSelectedDriver(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-            >
-              ✕
-            </button>
-            <h3 className="text-xl font-bold text-gray-700 mb-4">
-              Assign Bus to {selectedDriver.name}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="number"
-                placeholder="Bus Number"
-                className="border p-2 rounded-md"
-                value={busDetails.number}
-                onChange={(e) =>
-                  setBusDetails({ ...busDetails, number: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                name="route"
-                placeholder="Route"
-                className="border p-2 rounded-md"
-                value={busDetails.route}
-                onChange={(e) =>
-                  setBusDetails({ ...busDetails, route: e.target.value })
-                }
-              />
-              <input
-                type="number"
-                name="seats"
-                placeholder="Seats"
-                className="border p-2 rounded-md"
-                value={busDetails.seats}
-                onChange={(e) =>
-                  setBusDetails({ ...busDetails, seats: e.target.value })
-                }
-              />
+ <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+ <div className="bg-white rounded-lg p-8 w-full max-w-lg shadow-xl relative">
+   {/* Close Button */}
+   <button
+     onClick={() => setSelectedDriver(null)}
+     className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none"
+   >
+     ✕
+   </button>
 
-              <div>
-                
-<label className="block text-sm font-medium text-gray-700">
-departure Time
-  </label>
-              <input
-                type="time"
-                name="departureTime"
-                placeholder="Departure Time"
-                className="border p-2 rounded-md"
-                value={busDetails.departureTime}
-                onChange={(e) =>
-                  setBusDetails({ ...busDetails, departureTime: e.target.value })
-                }
-              />
-              </div>
+   {/* Title */}
+   <h3 className="text-2xl font-extrabold text-gray-800 mb-6 text-center">
+     Assign Bus to <span className="text-gray-600">{selectedDriver.name}</span>
+   </h3>
 
+   {/* Input Fields */}
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+     {/* Bus Number */}
+     <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-1">
+         Bus Number
+       </label>
+       <input
+         type="text"
+         name="number"
+         placeholder="Enter Bus Number"
+         className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-gray-500"
+         value={busDetails.number}
+         onChange={(e) =>
+           setBusDetails({ ...busDetails, number: e.target.value })
+         }
+       />
+     </div>
 
-<div className="relative">
-<label  className="block text-sm font-medium text-gray-700">
-    Arrival Time
-  </label>
-              
-              <input
-                type="time"
-                name="arrivalTime"
-                placeholder="Arrival Time"
-                className="border p-2 rounded-md"
-                value={busDetails.arrivalTime}
-                onChange={(e) =>
-                  setBusDetails({ ...busDetails, arrivalTime: e.target.value })
-                }
-              />
+     {/* Route */}
+     <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-1">
+         Route
+       </label>
+       <input
+         type="text"
+         name="route"
+         placeholder="Enter Route"
+         className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-gray-500"
+         value={busDetails.route}
+         onChange={(e) =>
+           setBusDetails({ ...busDetails, route: e.target.value })
+         }
+       />
+     </div>
+
+     {/* Seats */}
+     <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-1">
+         Number of Seats
+       </label>
+       <input
+         type="number"
+         name="seats"
+         placeholder="Enter Number of Seats"
+         className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-gray-500"
+         value={busDetails.seats}
+         onChange={(e) =>
+           setBusDetails({ ...busDetails, seats: e.target.value })
+         }
+       />
+     </div>
+
+     {/* Departure Time */}
+     <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-1">
+         Departure Time
+       </label>
+       <input
+         type="time"
+         name="departureTime"
+         className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-gray-500"
+         value={busDetails.departureTime}
+         onChange={(e) =>
+           setBusDetails({
+             ...busDetails,
+             departureTime: e.target.value,
+           })
+         }
+       />
+     </div>
+
+     {/* Arrival Time */}
+     <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-1">
+         Arrival Time
+       </label>
+       <input
+         type="time"
+         name="arrivalTime"
+         className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-gray-500"
+         value={busDetails.arrivalTime}
+         onChange={(e) =>
+           setBusDetails({ ...busDetails, arrivalTime: e.target.value })
+         }
+       />
+     </div>
+
+     {/* Date */}
+     <div>
+       <label className="block text-sm font-semibold text-gray-700 mb-1">
+         Date
+       </label>
+       <input
+         type="date"
+         name="date"
+         className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-gray-500"
+         value={busDetails.date}
+         onChange={(e) =>
+           setBusDetails({ ...busDetails, date: e.target.value })
+         }
+       />
+     </div>
+   </div>
+
+   {/* Image Upload Section */}
+   <div className="mt-6">
+     <label className="block text-sm font-semibold text-gray-700 mb-2">
+       Upload Bus Image
+     </label>
+     <div className="relative border-dashed border-2 border-gray-300 p-6 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+       <input
+         type="file"
+         accept="image/*"
+         onChange={handleImageChange}
+         className="absolute inset-0 opacity-0 cursor-pointer"
+       />
+       <div className="flex items-center justify-center">
+         {image ? (
+           <img
+             src={URL.createObjectURL(image)}
+             alt="Bus Preview"
+             className="w-24 h-24 rounded-lg object-cover"
+           />
+         ) : (
+           <p className="text-gray-500 text-sm">Click to upload image</p>
+         )}
+       </div>
+     </div>
+   </div>
+
+   {/* Submit Button */}
+   <button
+     className="mt-8 w-full py-3 bg-gray-900 text-white font-bold rounded-lg hover:bg-gray-700 transition"
+     onClick={handleAssignBus}
+   >
+     Assign Bus
+   </button>
+ </div>
 </div>
-               
-              
-              <input
-                type="date"
-                name="date"
-                placeholder="Date"
-                className="border p-2 rounded-md"
-                value={busDetails.date}
-                onChange={(e) =>
-                  setBusDetails({ ...busDetails, date: e.target.value })
-                }
-              />
-            </div>
 
-            {/* Image Upload Section */}
-            <div className="mt-4">
-              <label className="block text-sm mb-2 font-semibold">
-                Upload Bus Image
-              </label>
-              <div className="relative border-dashed border-2 border-gray-300 p-4 rounded-lg bg-white hover:bg-gray-100 transition">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                />
-                <div className="text-center">
-                  {image ? (
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt="Bus Preview"
-                      className="w-24 h-24 mx-auto rounded-lg object-cover"
-                    />
-                  ) : (
-                    <p className="text-sm text-gray-500">Click to upload image</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <button
-              className="mt-6 w-full py-2 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-700"
-              onClick={handleAssignBus}
-            >
-              Assign Bus
-            </button>
-          </div>
-        </div>
+      
       )}
     </div>
   );
