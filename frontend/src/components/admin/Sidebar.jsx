@@ -4,7 +4,7 @@ const Sidebar = ({ setActiveComponent, activeComponent }) => {
   const menuItems = [
     { key: "drivers", label: "Drivers" },
     { key: "accounts", label: "Accounts" },
-    { key: "addBus", label: "Add Bus" },
+    // { key: "addBus", label: "Add Bus" },
   ];
 
   return (

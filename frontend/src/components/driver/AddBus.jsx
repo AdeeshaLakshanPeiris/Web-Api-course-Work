@@ -99,113 +99,138 @@ const AddBus = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-gray-400 via-gray-500 to-gray-500 text-white rounded-lg shadow-md p-6 space-y-6 animate-fade-in">
-    <h2 className="text-3xl font-bold mb-4 text-center">Add a New Bus</h2>
-    <p className="text-sm text-gray-200 text-center">
-      Fill in the details below to add a new bus to the system.
-    </p>
   
-    {error && (
-      <div className="bg-red-200 text-red-700 p-3 rounded-lg">
-        <p>{error}</p>
-      </div>
-    )}
-  
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="bg-gradient-to-br from-gray-500 via-gray-200 to-gray-800 text-white rounded-lg shadow-xl p-8 space-y-8 animate-fade-in">
+  {/* Title Section */}
+  <div className="text-center">
+    <h2 className="text-4xl font-extrabold mb-2">Add a New Bus</h2>
+    <p className="text-gray-300 text-sm">Fill in the details to add a new bus to the system.</p>
+  </div>
+
+  {/* Error Message */}
+  {error && (
+    <div className="bg-red-600 bg-opacity-75 text-white py-3 px-4 rounded-lg">
+      <p>{error}</p>
+    </div>
+  )}
+
+  {/* Input Fields */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="relative">
+      <label className="block text-sm font-medium mb-1">Bus Number</label>
       <input
         type="text"
         name="number"
-        placeholder="Bus Number"
-        className="border rounded-md p-2 text-black shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
+        placeholder="Enter Bus Number"
+        className="w-full border border-gray-500 rounded-lg p-3 bg-gray-100 text-white placeholder-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
         value={busDetails.number}
         onChange={handleInputChange}
       />
+    </div>
+
+    <div className="relative">
+      <label className="block text-sm font-medium mb-1">Route</label>
       <input
         type="text"
         name="route"
-        placeholder="Route"
-        className="border rounded-md p-2 text-black shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
+        placeholder="Enter Route"
+        className="w-full border border-gray-500 rounded-lg p-3 bg-gray-100 text-white placeholder-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
         value={busDetails.route}
         onChange={handleInputChange}
       />
+    </div>
+
+    <div className="relative">
+      <label className="block text-sm font-medium mb-1">Seats</label>
       <input
         type="number"
         name="seats"
-        placeholder="Seats"
-        className="border rounded-md p-2 text-black shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
+        placeholder="Enter Number of Seats"
+        className="w-full border border-gray-500 rounded-lg p-3 bg-gray-100 text-white placeholder-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none"
         value={busDetails.seats}
         onChange={handleInputChange}
       />
+    </div>
+
+    <div className="relative">
+      <label className="block text-sm font-medium mb-1">Departure Time</label>
       <input
         type="time"
         name="departureTime"
-        placeholder="Departure Time"
-        className="border rounded-md p-2 text-black shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
+        className="w-full border border-gray-500 rounded-lg p-3 bg-gray-100 text-white focus:ring-2 focus:ring-gray-300 focus:outline-none"
         value={busDetails.departureTime}
         onChange={handleInputChange}
       />
+    </div>
+
+    <div className="relative">
+      <label className="block text-sm font-medium mb-1">Arrival Time</label>
       <input
         type="time"
         name="arrivalTime"
-        placeholder="Arrival Time"
-        className="border rounded-md p-2 text-black shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
+        className="w-full border border-gray-500 rounded-lg p-3 bg-gray-100 text-white focus:ring-2 focus:ring-gray-300 focus:outline-none"
         value={busDetails.arrivalTime}
         onChange={handleInputChange}
       />
+    </div>
+
+    <div className="relative">
+      <label className="block text-sm font-medium mb-1">Date</label>
       <input
         type="date"
         name="date"
-        placeholder="Date"
-        className="border rounded-md p-2 text-black shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
+        className="w-full border border-gray-500 rounded-lg p-3 bg-gray-100 text-white focus:ring-2 focus:ring-gray-300 focus:outline-none"
         value={busDetails.date}
         onChange={handleInputChange}
       />
     </div>
-  
-    {/* Image Upload Section */}
-    <div>
-      <label className="block text-sm mb-2 font-semibold">Upload Bus Image</label>
-      <div className="relative border-dashed border-2 border-gray-300 p-4 rounded-lg bg-white text-black hover:bg-gray-100 transition">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="absolute inset-0 opacity-0 cursor-pointer"
-        />
-        <div className="text-center">
-          {image ? (
-            <img
-              src={URL.createObjectURL(image)}
-              alt="Bus Preview"
-              className="w-24 h-24 mx-auto rounded-lg object-cover"
-            />
-          ) : (
-            <p className="text-sm text-gray-500">Click to upload image</p>
-          )}
-        </div>
+  </div>
+
+  {/* Image Upload Section */}
+  <div className="relative">
+    <label className="block text-sm font-medium mb-2">Upload Bus Image</label>
+    <div className="relative border-dashed border-2 border-gray-500 p-6 rounded-lg bg-gray-100 hover:bg-gray-800 text-center transition-all cursor-pointer">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        className="absolute inset-0 opacity-0 cursor-pointer"
+      />
+      <div className="text-gray-400">
+        {image ? (
+          <img
+            src={URL.createObjectURL(image)}
+            alt="Bus Preview"
+            className="w-32 h-32 mx-auto rounded-lg object-cover"
+          />
+        ) : (
+          <p className="text-sm">Click to upload image</p>
+        )}
       </div>
     </div>
-  
-    {/* Submit Button */}
-    <button
-      className={`mt-6 w-full py-3 px-5 rounded-lg font-semibold tracking-wide text-lg transition-all shadow-md ${
-        loading
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-gray-900 hover:bg-gray-700 hover:shadow-lg"
-      }`}
-      onClick={handleAddBus}
-      disabled={loading}
-    >
-      {loading ? (
-        <div className="flex items-center justify-center space-x-2">
-          <span>Adding Bus...</span>
-          <div className="w-4 h-4 border-t-2 border-white border-solid rounded-full animate-spin"></div>
-        </div>
-      ) : (
-        "Add Bus"
-      )}
-    </button>
   </div>
+
+  {/* Submit Button */}
+  <button
+    className={`w-full py-4 rounded-lg font-bold text-lg text-white transition-all ${
+      loading
+        ? "bg-gray-500 cursor-not-allowed"
+        : "bg-gray-900 hover:bg-gray-800"
+    }`}
+    onClick={handleAddBus}
+    disabled={loading}
+  >
+    {loading ? (
+      <div className="flex items-center justify-center space-x-3">
+        <span>Adding Bus...</span>
+        <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin"></div>
+      </div>
+    ) : (
+      "Add Bus"
+    )}
+  </button>
+</div>
+
   
   );
 };
