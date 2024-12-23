@@ -18,6 +18,7 @@ import { ModalProvider } from "./context/ModalContext";
 import Modal from "./components/messages/Modal";
 import TopHorizontalLoader from "./components/LoaderComponent/LoaderComponent";
 import { useLoader, LoaderProvider } from "./context/LoaderContext";
+import Footer from "./components/footer";
 
 const AppContent = () => {
   const { startLoading, stopLoading } = useLoader();
@@ -100,7 +101,9 @@ const AppContent = () => {
         />
         <Route path="/qr-code" element={<QRCodePage />} />
         <Route path="/verify-code" element={<VerifyQRCode />} />
+        
       </Routes>
+      <Footer/>
     </>
   );
 };
