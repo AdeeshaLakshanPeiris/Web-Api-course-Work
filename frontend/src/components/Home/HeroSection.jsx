@@ -105,7 +105,7 @@ export default function HeroSection() {
             <div className="xl:col-span-3 xl:w-[500px]  ml-32  xl:h-[500px] overflow-hidden ">
               <img
                   className="w-full mx-14s scale-80 "
-                  src="./src/assets/hero.png"
+                  src="../../../public/hero.jpeg"
                   alt="Bus Booking Illustration"
               />
             </div>
