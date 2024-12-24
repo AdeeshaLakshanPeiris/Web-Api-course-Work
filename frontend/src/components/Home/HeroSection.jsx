@@ -102,10 +102,10 @@ export default function HeroSection() {
           </div>
 
           {/* Image Section */}
-          <div className="xl:col-span-3 xl:w-[800px]    xl:h-[700px] overflow-hidden ">
+          <div className="xl:col-span-3 xl:w-[500px]  ml-32  xl:h-[500px] overflow-hidden ">
             <img
-              className="w-full mx-auto scale-100 "
-              src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/4/phone-mockup.png"
+              className="w-full mx-14s scale-80 "
+              src="./src/assets/hero.png"
               alt="Bus Booking Illustration"
             />
           </div>

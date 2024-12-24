@@ -8,7 +8,6 @@ const busRoutes = require("./routes/busRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const accountRoutes = require("./routes/accountRoutes");
-const feedbackRoutes = require("./routes/feedbackRoutes");
 const app = express();
 
 // Middleware
@@ -23,8 +22,6 @@ app.use("/api/drivers", driverRoutes); // Driver routes
 app.use("/api/accounts", accountRoutes); // Account routes
 // Static folder for uploaded images
 app.use("/uploads", express.static("uploads"));
-app.use("/api/feedbacks", feedbackRoutes);
-
 
 require('dotenv').config();
 

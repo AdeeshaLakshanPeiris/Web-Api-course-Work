@@ -30,15 +30,15 @@ const Navbar = () => {
       <div className="container px-4 mx-auto sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/" title="Home" className="flex rounded focus:ring-2 focus:ring-gray-900">
-              <img
-                className="w-auto h-8"
-                src="https://cdn.rareblocks.xyz/collection/clarity/images/logo.svg"
-                alt="Bus Reservation Logo"
-              />
-            </Link>
-          </div>
+              <div className="flex-shrink-0">
+      <Link
+        to="/"
+        title="Home"
+        className="flex rounded focus:ring-2 focus:ring-gray-900 text-3xl font-bold text-blue-950"
+      >
+        Ride<span className="text-green-900">Ready</span>
+      </Link>
+    </div>
 
           {/* Mobile Menu Toggle */}
           <div className="flex lg:hidden">
@@ -79,14 +79,11 @@ const Navbar = () => {
             <Link to="/" className="text-base font-medium text-gray-900 hover:text-gray-600">
               Home
             </Link>
-            <Link to="/pricing" className="text-base font-medium text-gray-900 hover:text-gray-600">
+            {/* <Link to="/pricing" className="text-base font-medium text-gray-900 hover:text-gray-600">
               Pricing
-            </Link>
+            </Link> */}
             <Link to="/buses" className="text-base font-medium text-gray-900 hover:text-gray-600">
               Book a Bus
-            </Link>
-            <Link to="/contact_Us" className="text-base font-medium text-gray-900 hover:text-gray-600">
-              Contact Us
             </Link>
 
             {user ? (
@@ -128,16 +125,13 @@ const Navbar = () => {
               <Link to="/buses" className="block text-base font-medium text-gray-900 hover:bg-gray-100 p-3 rounded">
                 Book a Bus
               </Link>
-              <Link to="/contact_Us" className="text-base font-medium text-gray-900 hover:text-gray-600">
-                Contact Us
-              </Link>
 
               {user ? (
                 <>
                   <span className="block text-base font-medium text-gray-900 p-3">Hello, {user.email}</span>
                   <button
                     onClick={handleLogout}
-                    className=" px-4 py-2 rounded text-white bg-gray-900 rounded-xl hover:bg-gray-700 transition"
+                    className=" px-4 py-2 rounded text-white bg-gray-900  hover:bg-gray-700 transition"
                   >
                     Logout
                   </button>

@@ -7,9 +7,9 @@ const Footer = () => {
     <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-2 md:col-span-3 lg:grid-cols-6 gap-y-16 gap-x-12">
             <div className="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
-                <img className="w-auto h-9" src="https://cdn.rareblocks.xyz/collection/celebration/images/logo.svg" alt="" />
-
-                <p className="text-base leading-relaxed text-gray-600 mt-7">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.</p>
+              
+<div className='flex rounded focus:ring-2 focus:ring-gray-900 text-3xl font-bold text-black'> <h1 className='text-3xl '> Ride<span className="text-blue-900">Ready</span></h1></div>
+                <p className="text-base leading-relaxed text-gray-600 mt-7">Plan your journey effortlessly with our smart bus reservation system.</p>
 
                 <ul className="flex items-center space-x-3 mt-9">
                     <li>
@@ -57,7 +57,7 @@ const Footer = () => {
             </div>
 
             <div>
-                <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">Company</p>
+                <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">Bus Resavation</p>
 
                 <ul className="mt-6 space-y-4">
                     <li>
@@ -67,14 +67,14 @@ const Footer = () => {
                     <li>
                         <a href="#" title="" className="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Features </a>
                     </li>
-
+{/* 
                     <li>
                         <a href="#" title="" className="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Works </a>
                     </li>
 
                     <li>
                         <a href="#" title="" className="flex text-base text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Career </a>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
 
@@ -116,7 +116,7 @@ const Footer = () => {
 
         <hr className="mt-16 mb-10 border-gray-200" />
 
-        <p className="text-sm text-center text-gray-600">© Copyright 2021, All Rights Reserved by Postcraft</p>
+        <p className="text-sm text-center text-gray-600">© Copyright 2024, All Rights Reserved by RideReady</p>
     </div>
 </section>
 

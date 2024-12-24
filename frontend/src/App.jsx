@@ -19,7 +19,6 @@ import Modal from "./components/messages/Modal";
 import TopHorizontalLoader from "./components/LoaderComponent/LoaderComponent";
 import { useLoader, LoaderProvider } from "./context/LoaderContext";
 import Footer from "./components/footer";
-import ContactUs from "./components/contact_us/ContactUs.jsx";
 
 const AppContent = () => {
   const { startLoading, stopLoading } = useLoader();
@@ -100,14 +99,6 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
-          <Route
-              path="/contact_us"
-              element={
-                  <ProtectedRoute role="passenger">
-                      <ContactUs />
-                  </ProtectedRoute>
-              }
-          />
         <Route path="/qr-code" element={<QRCodePage />} />
         <Route path="/verify-code" element={<VerifyQRCode />} />
         

@@ -2,11 +2,11 @@ import React from "react";
 
 const FeatureSection = () => {
   return (
-    <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+    <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 items-center lg:py-14 mx-auto">
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 items-center gap-12">
         {/* Feature: Easy Booking */}
         <div>
-          <div className="relative flex justify-center items-center size-12 bg-white rounded-xl before:absolute before:-inset-px before:-z-[1] before:bg-gradient-to-br before:from-blue-600 before:via-transparent before:to-violet-600 before:rounded-xl dark:bg-neutral-900">
+          <div className="relative flex justify-center items-center text-center  size-12 bg-white rounded-xl before:absolute before:-inset-px before:-z-[1] before:bg-gradient-to-br before:from-blue-600 before:via-transparent before:to-violet-600 before:rounded-xl dark:bg-neutral-900">
             <svg
               className="shrink-0 size-6 text-blue-600 dark:text-blue-500"
               xmlns="http://www.w3.org/2000/svg"
