@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import DriversList from "./DriversList";
 import AccountsList from "./AccountsList";
 import AddBus from "../driver/AddBus";
+import FeedbakList from "./FeedbakList.jsx";
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("drivers");
@@ -15,6 +16,8 @@ const AdminDashboard = () => {
         return <AccountsList />;
       case "addBus":
         return <AddBus />;
+      case "feedbacks":
+        return <FeedbakList/>
       default:
         return <p>Select an option from the sidebar</p>;
     }

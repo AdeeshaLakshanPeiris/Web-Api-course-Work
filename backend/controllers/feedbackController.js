@@ -27,6 +27,19 @@ const feedbackController = {
             console.error("Error saving feedback:", error);
             return res.status(500).json({ message: "An error occurred while submitting feedback." });
         }
+    },
+
+    async getFeedbacks(req, res) {
+        try {
+            // Fetch all feedbacks from the database
+            const feedbacks = await Feedback.find();
+
+            // Return feedbacks in response
+            return res.status(200).json({ feedbacks });
+        } catch (error) {
+            console.error("Error fetching feedbacks:", error);
+            return res.status(500).json({ message: "An error occurred while fetching feedbacks." });
+        }
     }
 };
 
