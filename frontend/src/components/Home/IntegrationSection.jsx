@@ -7,7 +7,7 @@ export default function IntegrationSection() {
             <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                 <div className="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-24">
                     <div>
-                        <img className="w-full max-w-md mx-auto" src="../../../public/book.jpeg" alt="" />
+                        <img className="w-full max-w-md mx-auto" src="book.jpeg" alt="" />
                     </div>
 
                     <div className="text-center lg:text-left">
