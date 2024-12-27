@@ -20,6 +20,8 @@ import TopHorizontalLoader from "./components/LoaderComponent/LoaderComponent";
 import { useLoader, LoaderProvider } from "./context/LoaderContext";
 import Footer from "./components/footer";
 import ContactUs from "./components/contact_us/ContactUs.jsx";
+import ForgotPassword from "./components/ForgotPassword.jsx";
+import ResetPassword from "./components/ResetPassword.jsx";
 
 const AppContent = () => {
   const { startLoading, stopLoading } = useLoader();
@@ -100,16 +102,20 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
-          <Route
-              path="/contact_us"
-              element={
-                  <ProtectedRoute role="passenger">
-                      <ContactUs />
-                  </ProtectedRoute>
-              }
-          />
+        <Route
+          path="/contact_us"
+          element={
+            <ProtectedRoute role="passenger">
+              <ContactUs />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/qr-code" element={<QRCodePage />} />
         <Route path="/verify-code" element={<VerifyQRCode />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+        /
 
       </Routes>
       <Footer />
