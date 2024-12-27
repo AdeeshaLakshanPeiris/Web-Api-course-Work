@@ -1,10 +1,12 @@
 # Node.js dependencies
 /backend/node_modules
 /frontend/node_modules
+/feedback-service/node_modules
 
 # Environment files
 /backend/.env
 /frontend/.env
+/feedback-service/.env
 
 # Logs
 /backend/logs

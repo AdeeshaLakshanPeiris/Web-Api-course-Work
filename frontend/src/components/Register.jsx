@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import Success from "./messages/Success";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../context/ModalContext";
 import api from "../api/api";
@@ -9,31 +8,51 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("passenger");
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { openSuccess, openAlert, openWarning } = useModal();
+  const { openSuccess, openAlert } = useModal();
+
+  const validate = () => {
+    const newErrors = {};
+    if (!name) newErrors.name = "Name is required.";
+    if (!email) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Please enter a valid email.";
+    }
+    if (!password) {
+      newErrors.password = "Password is required.";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters.";
+    }
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password.";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+    if (!role) newErrors.role = "Please select a role.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleRegister = async () => {
-    try {
+    if (!validate()) return;
 
+    try {
       const res = await api.post("/users/register", { name, email, password, role });
-      // alert(res.data.message);
       openSuccess("Register successful! Redirecting...");
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 1500);
     } catch (err) {
-      openAlert(err.response?.data?.message || " Register failed! Try again.");
-      // alert(err.response.data.message);
-
+      openAlert(err.response?.data?.message || "Register failed! Try again.");
     }
   };
 
   return (
-
     <>
-
-
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="absolute bottom-0 right-0 overflow-hidden lg:inset-y-0 ">
           <img
@@ -56,9 +75,11 @@ const Register = () => {
               <input
                 type="text"
                 placeholder="Enter your full name"
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
+                className={`w-full border p-2 rounded-md ${errors.name ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-500"
+                  } focus:ring-2 focus:border-gray-500 outline-none`}
                 onChange={(e) => setName(e.target.value)}
               />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
 
             {/* Email Field */}
@@ -69,9 +90,11 @@ const Register = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
+                className={`w-full border p-2 rounded-md ${errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-500"
+                  } focus:ring-2 focus:border-gray-500 outline-none`}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
 
             {/* Password Field */}
@@ -82,9 +105,28 @@ const Register = () => {
               <input
                 type="password"
                 placeholder="Create a strong password"
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
+                className={`w-full border p-2 rounded-md ${errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-500"
+                  } focus:ring-2 focus:border-gray-500 outline-none`}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            </div>
+
+            {/* Confirm Password Field */}
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                placeholder="Re-enter your password"
+                className={`w-full border p-2 rounded-md ${errors.confirmPassword ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-500"
+                  } focus:ring-2 focus:border-gray-500 outline-none`}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+              )}
             </div>
 
             {/* Role Selection */}
@@ -93,20 +135,22 @@ const Register = () => {
                 Role
               </label>
               <select
-                className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
+                className={`w-full border p-2 rounded-md ${errors.role ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-500"
+                  } focus:ring-2 focus:border-gray-500 outline-none`}
                 onChange={(e) => setRole(e.target.value)}
                 value={role}
               >
                 <option value="">Select a role</option>
-                <option value="admin">Admin</option>
+                {/* <option value="admin">Admin</option> */}
                 <option value="driver">Driver</option>
                 <option value="passenger">Passenger</option>
               </select>
+              {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
             </div>
           </div>
 
           <button
-            className="mt-6 w-full px-4 py-2 text-sm font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700 "
+            className="mt-6 w-full px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-xl hover:bg-gray-700"
             onClick={handleRegister}
           >
             Register
@@ -114,18 +158,13 @@ const Register = () => {
 
           <p className="mt-4 text-sm text-gray-700 text-center">
             Already have an account?{" "}
-            <a
-              href="/login"
-              className=" font-semibold "
-            >
+            <a href="/login" className="font-semibold">
               Log In
             </a>
           </p>
         </div>
       </div>
     </>
-
-
   );
 };
 

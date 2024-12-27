@@ -79,11 +79,14 @@ const Navbar = () => {
             <Link to="/" className="text-base font-medium text-gray-900 hover:text-gray-600">
               Home
             </Link>
-            <Link to="/pricing" className="text-base font-medium text-gray-900 hover:text-gray-600">
-              Pricing
-            </Link>
+            {/*<Link to="/pricing" className="text-base font-medium text-gray-900 hover:text-gray-600">*/}
+            {/*  Pricing*/}
+            {/*</Link>*/}
             <Link to="/buses" className="text-base font-medium text-gray-900 hover:text-gray-600">
               Book a Bus
+            </Link>
+            <Link to="/contact_Us" className="text-base font-medium text-gray-900 hover:text-gray-600">
+              Contact Us
             </Link>
 
             {user ? (
@@ -119,11 +122,14 @@ const Navbar = () => {
               <Link to="/" className="block text-base font-medium text-gray-900 hover:bg-gray-100 p-3 rounded">
                 Home
               </Link>
-              <Link to="/pricing" className="block text-base font-medium text-gray-900 hover:bg-gray-100 p-3 rounded">
-                Pricing
-              </Link>
+              {/*<Link to="/pricing" className="block text-base font-medium text-gray-900 hover:bg-gray-100 p-3 rounded">*/}
+              {/*  Pricing*/}
+              {/*</Link>*/}
               <Link to="/buses" className="block text-base font-medium text-gray-900 hover:bg-gray-100 p-3 rounded">
                 Book a Bus
+              </Link>
+              <Link to="/contact_Us" className="text-base font-medium text-gray-900 hover:text-gray-600">
+                Contact Us
               </Link>
 
               {user ? (

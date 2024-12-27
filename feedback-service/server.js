@@ -3,11 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-const userRoutes = require("./routes/authRoutes");
-const busRoutes = require("./routes/busRoutes");
-const reservationRoutes = require("./routes/reservationRoutes");
-const driverRoutes = require("./routes/driverRoutes");
-const accountRoutes = require("./routes/accountRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const app = express();
 
@@ -16,15 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/buses", busRoutes);
-app.use("/api/reservations", reservationRoutes);
-app.use("/api/drivers", driverRoutes); // Driver routes
-app.use("/api/accounts", accountRoutes); // Account routes
-// Static folder for uploaded images
-app.use("/uploads", express.static("uploads"));
 app.use("/api/feedbacks", feedbackRoutes);
-
 
 require('dotenv').config();
 
@@ -46,6 +33,6 @@ mongoose
     });
 
 // Start Server
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
+app.listen(5001, () => {
+    console.log("Server running on port 5001");
 });
