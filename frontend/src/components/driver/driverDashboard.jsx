@@ -5,18 +5,19 @@ import BusList from "./BusList";
 import Reservations from "./Reservations";
 
 const DriverDashboard = () => {
-  const [activeComponent, setActiveComponent] = useState("addBus"); // Active component state
+  const [activeComponent, setActiveComponent] = useState("busList"); // Active component state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar toggle state
 
   const renderContent = () => {
     switch (activeComponent) {
-      case "addBus":
-        return <AddBus />;
       case "verifyQR":
         return <VerifyQRCode />;
+      case "addBus":
+        return <AddBus />;
       case "busList":
-        return <BusList/>;
+        return <BusList />;
       case "Reservations":
-        return <Reservations/>;
+        return <Reservations />;
       default:
         return <p>Select an option from the sidebar</p>;
     }
@@ -25,40 +26,33 @@ const DriverDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar Section */}
-      <aside className="w-64 bg-gray-600 text-white flex-shrink-0 p-6">
-    
+      <aside
+        className={`md:relative fixed inset-y-0 left-0 z-50 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 transition-transform duration-300 ease-in-out bg-gray-600 w-64 text-white flex-shrink-0 p-6`}
+      >
         <h1 className="text-2xl font-bold mb-6">Driver Dashboard</h1>
         <nav className="space-y-4">
           <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeComponent === "addBus" ? "bg-gray-900" : "hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveComponent("addBus")}
-          >
-            Add Bus
-          </button>
-          {/* <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeComponent === "verifyQR" ? "bg-purple-800" : "hover:bg-purple-700"
-            }`}
-            onClick={() => setActiveComponent("verifyQR")}
-          >
-            Verify QR Codes
-          </button> */}
-          <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeComponent === "busList" ? "bg-gray-900" : "hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveComponent("busList")}
+            className={`w-full text-left px-4 py-2 rounded-lg ${activeComponent === "busList"
+              ? "bg-gray-900"
+              : "hover:bg-gray-700"
+              }`}
+            onClick={() => {
+              setActiveComponent("busList");
+              setIsSidebarOpen(false); // Close sidebar on mobile after selection
+            }}
           >
             Verify QR Codes
           </button>
-
           <button
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeComponent === "Reservations" ? "bg-gray-900" : "hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveComponent("Reservations")}
+            className={`w-full text-left px-4 py-2 rounded-lg ${activeComponent === "Reservations"
+              ? "bg-gray-900"
+              : "hover:bg-gray-700"
+              }`}
+            onClick={() => {
+              setActiveComponent("Reservations");
+              setIsSidebarOpen(false); // Close sidebar on mobile after selection
+            }}
           >
             Reservations
           </button>
@@ -66,10 +60,23 @@ const DriverDashboard = () => {
       </aside>
 
       {/* Main Content Section */}
-      <main className="flex-1 bg-white rounded-lg shadow-md m-6 p-6">
-     
-        {renderContent()}
-      </main>
+      <div className="flex-1 flex flex-col">
+        {/* Header Section */}
+        <header className="bg-gray-600 text-white p-4 flex items-center justify-between md:hidden">
+          <h1 className="text-xl font-bold">Driver Dashboard</h1>
+          <button
+            className="text-white bg-gray-700 p-2 rounded-lg"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? "Close" : "Menu"}
+          </button>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 bg-white rounded-lg shadow-md m-6 p-6 relative">
+          {renderContent()}
+        </main>
+      </div>
     </div>
   );
 };

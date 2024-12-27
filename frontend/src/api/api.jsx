@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext"; // Import AuthContext for user
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL, // Base URL from environment variable
-  
+
 });
 
 // Request Interceptor: Attach Token to Requests
@@ -14,10 +14,10 @@ api.interceptors.request.use(
     const token = localStorage.getItem("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      
+
     }
     return config;
-    
+
   },
   (error) => {
     return Promise.reject(error); // Handle errors during request setup
@@ -37,10 +37,10 @@ api.interceptors.response.use(
       // Handle token expiry or invalid token
       console.error("Token expired or invalid. Logging out...");
       openAlert("Your session has expired. Please log in again.");
-      
+
       // Logout user
-      logout(); 
-      
+      logout();
+
       // Redirect to login page
       window.location.href = "/login";
     }

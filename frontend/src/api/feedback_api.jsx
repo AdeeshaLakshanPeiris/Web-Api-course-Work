@@ -1,6 +1,6 @@
 import axios from "axios";
-import {useModal} from "../context/ModalContext"; // Import ModalContext for alerts
-import {useAuth} from "../context/AuthContext"; // Import AuthContext for user management
+import { useModal } from "../context/ModalContext"; // Import ModalContext for alerts
+import { useAuth } from "../context/AuthContext"; // Import AuthContext for user management
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_Feedback_URL,
@@ -28,8 +28,8 @@ api.interceptors.response.use(
         return response; // Proceed if the response is successful
     },
     async (error) => {
-        const {openAlert} = useModal(); // Get modal functions
-        const {logout} = useAuth(); // Get logout function from AuthContext
+        const { openAlert } = useModal(); // Get modal functions
+        const { logout } = useAuth(); // Get logout function from AuthContext
 
         if (error.response?.status === 401 || error.response?.status === 403) {
             // Handle token expiry or invalid token
