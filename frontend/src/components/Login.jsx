@@ -7,7 +7,7 @@ import { useLoader } from "../context/LoaderContext";
 import api from "../api/api";
 
 const Login = () => {
-  const { login ,user } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,20 +15,20 @@ const Login = () => {
   const { openSuccess, openAlert, openWarning } = useModal();
   const { startLoading, stopLoading } = useLoader();
 
-  
+
   const handleLogin = async () => {
-    
+
 
     try {
       setLoading(true);
       startLoading();
-      
-      
+
+
       const response = await api.post('/users/login', {
         email,
         password,
       });
-      
+
       const { user, token } = response.data;
 
       // Decode the token to get user data
@@ -40,7 +40,7 @@ const Login = () => {
       };
 
       // Save user data to AuthContext
-      login(userData,token);
+      login(userData, token);
 
       openSuccess("Login successful! Redirecting...");
       setTimeout(() => {
@@ -95,9 +95,8 @@ const Login = () => {
           />
         </div>
         <button
-          className={`w-full mt-6 py-2 font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700  ${
-            loading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-gray-700"
-          }`}
+          className={`w-full mt-6 py-2 font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700  ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-gray-700"
+            }`}
           onClick={handleLogin}
           disabled={loading}
         >

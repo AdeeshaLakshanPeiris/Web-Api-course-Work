@@ -101,9 +101,9 @@ const AppContent = () => {
         />
         <Route path="/qr-code" element={<QRCodePage />} />
         <Route path="/verify-code" element={<VerifyQRCode />} />
-        
+
       </Routes>
-      <Footer/>
+      <Footer />
     </>
   );
 };
