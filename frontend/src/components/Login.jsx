@@ -121,6 +121,14 @@ const Login = () => {
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                     </div>
                 </div>
+                <div className="text-center mt-4">
+                    <p className="text-sm text-gray-600">
+                        Forgot your password?{" "}
+                        <a href="/forgot-password" className="font-semibold text-blue-500">
+                            Reset it here
+                        </a>
+                    </p>
+                </div>
                 <button
                     className={`w-full mt-6 py-2 font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700  ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-gray-700"
                         }`}
