@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (to, subject, html, qrCodeBuffer) => {
+const sendEmailDriverPass = async (to, subject, html, qrCodeBuffer) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -32,4 +32,4 @@ const sendEmail = async (to, subject, html, qrCodeBuffer) => {
   }
 };
 
-module.exports = sendEmail;
+module.exports = sendEmailDriverPass;

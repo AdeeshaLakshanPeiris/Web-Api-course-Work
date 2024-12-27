@@ -129,24 +129,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* Role Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Role
-              </label>
-              <select
-                className={`w-full border p-2 rounded-md ${errors.role ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-500"
-                  } focus:ring-2 focus:border-gray-500 outline-none`}
-                onChange={(e) => setRole(e.target.value)}
-                value={role}
-              >
-                <option value="">Select a role</option>
-                {/* <option value="admin">Admin</option> */}
-                <option value="driver">Driver</option>
-                <option value="passenger">Passenger</option>
-              </select>
-              {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
-            </div>
+
           </div>
 
           <button
