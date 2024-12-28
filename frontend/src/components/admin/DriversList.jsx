@@ -4,12 +4,15 @@ import { useModal } from "../../context/ModalContext";
 import api from "../../api/api";
 import { useLoader } from "../../context/LoaderContext";
 import AssignBusDriver from "./AssignBusDrivers";
+import UpdateBusDriver from "./UpdateBusDriver";
+import BusList from "./BusList";
 
 const DriversList = () => {
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedDriver, setSelectedDriver] = useState(null);
+  const [showBuses, setShowBuses] = useState(null);
   const [AddDriver, setAddDriver] = useState(false);
   const { startLoading, stopLoading } = useLoader();
   const { openSuccess, openAlert, openWarning, openConfirm } = useModal();
@@ -112,6 +115,7 @@ const DriversList = () => {
       openAlert(err.response?.data?.message);
     }
   };
+  console.log(showBuses)
 
   if (loading) return <p>Loading drivers...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -141,6 +145,9 @@ const DriversList = () => {
                 <strong>Email:</strong> {driver.email}
               </p>
               <p>
+                <strong>Bus Count:</strong> {driver.busCount}
+              </p>
+              <p>
                 {/* <strong>Phone:</strong> {driver.phone} */}
               </p>
               <div className="mt-2 flex space-x-2">
@@ -155,6 +162,12 @@ const DriversList = () => {
                   onClick={() => setSelectedDriver(driver)}
                 >
                   Assign Bus
+                </button>
+                <button
+                  className="bg-gray-100 border border-black text-black py-1 px-3 rounded hover:bg-gray-600"
+                  onClick={() => setShowBuses(driver)}
+                >
+                  Update
                 </button>
               </div>
             </li>
@@ -326,6 +339,7 @@ const DriversList = () => {
             >
               Assign Bus
             </button>
+
           </div>
         </div>
 
@@ -339,6 +353,13 @@ const DriversList = () => {
         />
 
 
+      )}
+      {/* Show Bus List Modal */}
+      {showBuses && (
+        <BusList
+          driverID={showBuses}
+          onClose={() => setShowBuses(null)}
+        />
       )}
     </div>
   );
