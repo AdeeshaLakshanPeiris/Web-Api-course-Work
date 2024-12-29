@@ -17,7 +17,6 @@ api.interceptors.request.use(
 
     }
     return config;
-
   },
   (error) => {
     return Promise.reject(error); // Handle errors during request setup
