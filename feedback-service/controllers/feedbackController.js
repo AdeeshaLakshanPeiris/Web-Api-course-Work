@@ -4,11 +4,11 @@ const Feedback = require("../models/Feedback"); // Import the Feedback model
 const feedbackController = {
     async storeFeedback(req, res) {
         try {
-            const {name, email, busNumber, complaint} = req.body;
+            const {name, email, busNumber, complaint, submittedAt} = req.body;
 
             // Validate required fields
-            if (!name || !email || !busNumber || !complaint) {
-                return res.status(400).json({message: "All fields are required."});
+            if (!name || !email || !busNumber || !complaint || !submittedAt) {
+                return res.status(400).json({message: "All fields, including submittedAt, are required."});
             }
 
             // Create a new feedback entry
@@ -16,7 +16,8 @@ const feedbackController = {
                 name,
                 email,
                 busNumber,
-                complaint
+                complaint,
+                submittedAt: new Date(submittedAt), // Convert to Date object for database storage
             });
 
             // Save the feedback to the database
@@ -29,6 +30,7 @@ const feedbackController = {
         }
     },
 
+
     async getFeedbacks(req, res) {
         try {
             // Fetch all feedbacks from the database
@@ -40,7 +42,32 @@ const feedbackController = {
             console.error("Error fetching feedbacks:", error);
             return res.status(500).json({message: "An error occurred while fetching feedbacks."});
         }
-    }
+    },
+
+
+    async deleteFeedback(req, res) {
+        try {
+            const {id} = req.params;
+
+            // Validate the ID
+            if (!id) {
+                return res.status(400).json({message: "Feedback ID is required."});
+            }
+
+            // Find and delete the feedback
+            const deletedFeedback = await Feedback.findByIdAndDelete(id);
+
+            // Check if feedback was found and deleted
+            if (!deletedFeedback) {
+                return res.status(404).json({message: "Feedback not found."});
+            }
+
+            return res.status(200).json({message: "Feedback deleted successfully."});
+        } catch (error) {
+            console.error("Error deleting feedback:", error);
+            return res.status(500).json({message: "An error occurred while deleting feedback."});
+        }
+    },
 };
 
 module.exports = feedbackController;

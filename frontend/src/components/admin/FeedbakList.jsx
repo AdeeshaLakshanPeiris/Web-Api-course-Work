@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import api from "../../api/feedback_api.jsx";
 
 const FeedbackList = () => {
@@ -25,22 +25,68 @@ const FeedbackList = () => {
         fetchFeedbacks();
     }, []);
 
+    const deleteFeedback = async (id) => {
+        try {
+            const response = await api.delete(`/feedbacks/delete/${id}`);
+            if (response.status !== 200) {
+                throw new Error("Failed to delete feedback.");
+            }
+            // Update the feedback list after deletion
+            setFeedbacks((prevFeedbacks) => prevFeedbacks.filter((feedback) => feedback._id !== id));
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Feedback List</h2>
+        <div className="p-8 bg-gray-50 rounded-xl shadow-lg">
+            <h2 className="text-3xl font-extrabold text-gray-800 mb-6">Feedback List</h2>
             {feedbacks.length === 0 ? (
-                <p>No feedbacks available.</p>
+                <p className="text-gray-500 text-lg">No feedbacks available at the moment.</p>
             ) : (
-                <ul className="space-y-4">
+                <ul className="space-y-6">
                     {feedbacks.map((feedback) => (
-                        <li key={feedback._id} className="p-4 bg-gray-100 rounded-lg shadow-md">
-                            <p><strong>Name:</strong> {feedback.name}</p>
-                            <p><strong>Email:</strong> {feedback.email}</p>
-                            <p><strong>Bus Number:</strong> {feedback.busNumber}</p>
-                            <p><strong>Complaint:</strong> {feedback.complaint}</p>
+                        <li
+                            key={feedback._id}
+                            className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200"
+                        >
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-xl font-semibold text-gray-800">
+                                    {feedback.name}
+                                </h3>
+                                <p className="text-sm text-gray-500 italic">
+                                    Submitted on:
+                                    <span className="ml-1 font-medium text-blue-600">
+                                {new Date(feedback.submittedAt).toLocaleDateString()}
+                            </span> at
+                                    <span className="ml-1 font-medium text-blue-600">
+                                {new Date(feedback.submittedAt).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
+                            </span>
+                                </p>
+                            </div>
+                            <div className="text-gray-700 mb-4">
+                                <p className="mb-2">
+                                    <span className="font-medium">Email:</span> {feedback.email}
+                                </p>
+                                <p className="mb-2">
+                                    <span className="font-medium">Bus Number:</span> {feedback.busNumber}
+                                </p>
+                                <p>
+                                    <span className="font-medium">Complaint:</span> {feedback.complaint}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => deleteFeedback(feedback._id)}
+                                className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+                            >
+                                Delete Feedback
+                            </button>
                         </li>
                     ))}
                 </ul>
