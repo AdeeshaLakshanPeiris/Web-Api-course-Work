@@ -1,19 +1,19 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useAuth} from "../context/AuthContext";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-import {useModal} from "../context/ModalContext";
-import {useLoader} from "../context/LoaderContext";
+import { useModal } from "../context/ModalContext";
+import { useLoader } from "../context/LoaderContext";
 import api from "../api/api";
 
 const Login = () => {
-    const {login, user} = useAuth();
+    const { login, user } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const {openSuccess, openAlert, openWarning} = useModal();
-    const {startLoading, stopLoading} = useLoader();
+    const { openSuccess, openAlert, openWarning } = useModal();
+    const { startLoading, stopLoading } = useLoader();
     const [errors, setErrors] = useState({});
 
     const validate = () => {
@@ -45,7 +45,7 @@ const Login = () => {
                 password,
             });
 
-            const {user, token} = response.data;
+            const { user, token } = response.data;
 
             // Decode the token to get user data
             const decodedToken = JSON.parse(atob(token.split(".")[1]));
@@ -100,11 +100,9 @@ const Login = () => {
                         <input
                             type="email"
                             placeholder="Enter your email"
-                            className={`w-full px-4 py-2 border ${
-                                errors.email ? "border-red-500" : "border-gray-300"
-                            } rounded-md focus:outline-none focus:ring-2 ${
-                                errors.email ? "focus:ring-red-500" : "focus:ring-gray-500"
-                            }`}
+                            className={`w-full px-4 py-2 border ${errors.email ? "border-red-500" : "border-gray-300"
+                                } rounded-md focus:outline-none focus:ring-2 ${errors.email ? "focus:ring-red-500" : "focus:ring-gray-500"
+                                }`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -114,21 +112,26 @@ const Login = () => {
                         <input
                             type="password"
                             placeholder="Enter your password"
-                            className={`w-full px-4 py-2 border ${
-                                errors.password ? "border-red-500" : "border-gray-300"
-                            } rounded-md focus:outline-none focus:ring-2 ${
-                                errors.password ? "focus:ring-red-500" : "focus:ring-gray-500"
-                            }`}
+                            className={`w-full px-4 py-2 border ${errors.password ? "border-red-500" : "border-gray-300"
+                                } rounded-md focus:outline-none focus:ring-2 ${errors.password ? "focus:ring-red-500" : "focus:ring-gray-500"
+                                }`}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                     </div>
                 </div>
+                <div className="text-center mt-4">
+                    <p className="text-sm text-gray-600">
+                        Forgot your password?{" "}
+                        <a href="/forgot-password" className="font-semibold text-blue-500">
+                            Reset it here
+                        </a>
+                    </p>
+                </div>
                 <button
-                    className={`w-full mt-6 py-2 font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700  ${
-                        loading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-gray-700"
-                    }`}
+                    className={`w-full mt-6 py-2 font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700  ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-gray-700"
+                        }`}
                     onClick={handleLogin}
                     disabled={loading}
                 >

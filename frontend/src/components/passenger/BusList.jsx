@@ -1,14 +1,14 @@
 import axios from "axios";
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../api/api";
-import {useLoader} from "../../context/LoaderContext";
+import { useLoader } from "../../context/LoaderContext";
 
 const BusList = () => {
     const [buses, setBuses] = useState([]); // Original bus data from API
     const [filteredBuses, setFilteredBuses] = useState([]); // Filtered buses for display
     const [searchTerm, setSearchTerm] = useState(""); // Search input value
-    const {startLoading, stopLoading} = useLoader();
+    const { startLoading, stopLoading } = useLoader();
 
 
     // Fetch buses from API
@@ -50,12 +50,12 @@ const BusList = () => {
                             value={searchTerm}
                             onChange={handleSearch}
                         />
-                        <button
+                        {/* <button
                             className="ml-4 px-4 py-3 text-sm font-semibold  text-white bg-gray-900 rounded-xl hover:bg-gray-700"
                             onClick={() => setFilteredBuses(buses)} // Reset search results
                         >
                             Reset
-                        </button>
+                        </button> */}
                     </div>
 
                     {/* Bus Cards */}
@@ -75,14 +75,14 @@ const BusList = () => {
                                             className="h-52 flex flex-col justify-center items-center bg-gray-600 rounded-t-xl overflow-hidden">
 
 
-                                            <img src={bus.image} alt=""/>
+                                            <img src={bus.image} alt="" />
 
                                         </div>
                                         <div className="p-4 md:p-6">
-       <span className="block mb-1 text-xs font-semibold uppercase text-gray-900  dark:text-blue-500">
-    
-       {bus.number}
-       </span>
+                                            <span className="block mb-1 text-xs font-semibold uppercase text-gray-900  dark:text-blue-500">
+
+                                                {bus.number}
+                                            </span>
                                             <h3 className="text-xl font-semibold text-gray-800 dark:text-neutral-300 dark:hover:text-white">
                                                 {bus.route}
 

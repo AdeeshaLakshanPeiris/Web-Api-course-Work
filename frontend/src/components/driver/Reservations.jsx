@@ -60,7 +60,7 @@ export default function Reservations() {
       {loading && <p className="text-center text-gray-500">Loading...</p>}
 
       {/* List of Buses */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3  gap-6">
         {buses.map((bus) => (
           <div
             key={bus._id}
@@ -89,35 +89,37 @@ export default function Reservations() {
 
       {/* Selected Bus Details */}
       {selectedBus && busDetails && (
-        <div className="mt-10 bg-white p-6 rounded-lg shadow-md">
+        <div className="mt-10 bg-white p-6 rounded-lg shadow-md w-[220px] md:w-full">
           <h2 className="text-2xl font-bold mb-4">Bus Details</h2>
-          <p>
-            <span className="font-semibold">Bus Number:</span>{" "}
-            {busDetails.busDetails.number}
-          </p>
-          <p>
-            <span className="font-semibold">Route:</span>{" "}
-            {busDetails.busDetails.route}
-          </p>
-          <p>
-            <span className="font-semibold">Total Seats:</span>{" "}
-            {busDetails.totalSeats}
-          </p>
-          <p>
-            <span className="font-semibold">Reserved Seats:</span>{" "}
-            {busDetails.reservedSeats.join(", ")}
-          </p>
-          <p>
-            <span className="font-semibold">Available Seats:</span>{" "}
-            {busDetails.availableSeats.join(", ")}
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <p>
+              <span className="font-semibold">Bus Number:</span>{" "}
+              {busDetails.busDetails.number}
+            </p>
+            <p>
+              <span className="font-semibold">Route:</span>{" "}
+              {busDetails.busDetails.route}
+            </p>
+            <p>
+              <span className="font-semibold">Total Seats:</span>{" "}
+              {busDetails.busDetails.seats}
+            </p>
+            <p>
+              <span className="font-semibold">Reserved Seats:</span>{" "}
+              {busDetails.reservedSeats.join(", ")}
+            </p>
+            <p>
+              <span className="font-semibold">Available Seats:</span>{" "}
+              {busDetails.busDetails.seats - busDetails.reservedSeats.length}
+            </p>
+          </div>
 
           {/* Reservations Table */}
-          <div className="mt-6">
+          <div className="mt-6 overflow-x-auto">
             <h3 className="text-xl font-bold mb-4">Reservations</h3>
             <table className="w-full border-collapse text-left">
               <thead>
-                <tr>
+                <tr className="bg-gray-100">
                   <th className="border-b py-2 px-4">Seat Number</th>
                   <th className="border-b py-2 px-4">Passenger Name</th>
                   <th className="border-b py-2 px-4">Email</th>
@@ -126,19 +128,14 @@ export default function Reservations() {
               </thead>
               <tbody>
                 {busDetails.reservations.map((reservation) => (
-                  <tr key={reservation._id}>
-                    <td className="border-b py-2 px-4">
-                      {reservation.seatNumber}
-                    </td>
-                    <td className="border-b py-2 px-4">
-                      {reservation.passengerName}
-                    </td>
-                    <td className="border-b py-2 px-4">
-                      {reservation.passengerEmail}
-                    </td>
-                    <td className="border-b py-2 px-4">
-                      {reservation.passengerPhone}
-                    </td>
+                  <tr
+                    key={reservation._id}
+                    className="hover:bg-gray-50 transition duration-200"
+                  >
+                    <td className="border-b py-2 px-4">{reservation.seatNumber}</td>
+                    <td className="border-b py-2 px-4">{reservation.passengerName}</td>
+                    <td className="border-b py-2 px-4">{reservation.passengerEmail}</td>
+                    <td className="border-b py-2 px-4">{reservation.passengerPhone}</td>
                   </tr>
                 ))}
               </tbody>
@@ -146,6 +143,7 @@ export default function Reservations() {
           </div>
         </div>
       )}
+
     </div>
   );
 }
