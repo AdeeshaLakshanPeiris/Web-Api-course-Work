@@ -9,6 +9,9 @@ const reservationRoutes = require("./routes/reservationRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const accountRoutes = require("./routes/accountRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const swaggerDocs = require("./config/swaggerConfig");
+const swaggerUi = require('swagger-ui-express');
+
 const app = express();
 
 // Middleware
@@ -27,6 +30,9 @@ app.use("/api/feedbacks", feedbackRoutes);
 
 
 require('dotenv').config();
+
+// Swagger UI setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // MongoDB Connection
 
