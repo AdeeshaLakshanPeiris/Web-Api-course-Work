@@ -9,7 +9,7 @@ const Navbar = () => {
   const { user, logout } = useAuth(); // Extract user and logout function from AuthContext
   const navigate = useNavigate(); // Navigation hook for redirection
   const [menuExpanded, setMenuExpanded] = useState(false); // State for mobile menu toggle
-  const { openSuccess, openAlert, openWarning ,openConfirm } = useModal();
+  const { openSuccess, openAlert, openWarning, openConfirm } = useModal();
   const { startLoading, stopLoading } = useLoader();
   const handleLogout = () => {
     openConfirm(
@@ -33,8 +33,8 @@ const Navbar = () => {
           <div className="flex-shrink-0">
             <Link to="/" title="Home" className="flex rounded focus:ring-2 focus:ring-gray-900">
               <img
-                className="w-auto h-8"
-                src="https://cdn.rareblocks.xyz/collection/clarity/images/logo.svg"
+                className="w-32 -mt-12 md:ml-20 absolute md:-mt-16 md:w-44"
+                src="/logo.png "
                 alt="Bus Reservation Logo"
               />
             </Link>
@@ -90,20 +90,20 @@ const Navbar = () => {
             </Link>
 
             {user ? (
-                <>
+              <>
                 <span className="text-gray-700 font-medium">Hello, {user.email}</span>
                 <button
                   onClick={handleLogout}
-                  className= " inline-flex items-center px-6 py-3 text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700 "
+                  className=" inline-flex items-center px-6 py-3 text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700 "
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="text-base font-medium text-gray-900 hover:text-gray-600">
+                {/* <Link to="/login" className="text-base font-medium text-gray-900 hover:text-gray-600">
                   Customer Login
-                </Link>
+                </Link> */}
                 <Link
                   to="/login"
                   className="inline-flex items-center px-6 py-3 text-base font-bold text-white bg-gray-900 rounded-xl hover:bg-gray-700"
