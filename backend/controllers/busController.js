@@ -10,7 +10,7 @@ const getAllBuses = async (req, res) => {
     // Map through buses and add full image URL
     const busesWithImages = buses.map((bus) => ({
       ...bus.toObject(), // Convert Mongoose document to plain object
-      image: bus.image ? `${req.protocol}://${req.get("host")}${bus.image}` : null, // Construct full image URL
+      image: bus.image ? `${req.protocol}://${req.get("host")}/${bus.image}` : null, // Construct full image URL
     }));
 
     res.status(200).json(busesWithImages);
@@ -47,20 +47,20 @@ const addBus = async (req, res) => {
     });
     await bus.save();
 
-     // Construct a full image URL in the response
-     const fullBusData = {
+    // Construct a full image URL in the response
+    const fullBusData = {
       ...bus._doc,
       image: imagePath ? `${req.protocol}://${req.get("host")}${imagePath}` : null,
     };
 
-   
+
     res.status(201).json({
       message: "Bus added successfully",
       bus: fullBusData,
     });
 
- 
-    
+
+
   } catch (error) {
     console.error("Error adding bus:", error);
     res.status(500).json({ message: "Failed to add bus" });
@@ -146,4 +146,4 @@ const deleteBus = async (req, res) => {
 };
 
 
-module.exports = { getAllBuses, addBus, getBusById ,getBusesByDriver , deleteBus};
+module.exports = { getAllBuses, addBus, getBusById, getBusesByDriver, deleteBus };
